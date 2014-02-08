@@ -21,27 +21,15 @@ namespace HazeAPI.Controllers
         }
 
         [Route("fetch/{hazeId}/haze")]
-        public Task<Haze> GetHaze(String hazeId)
+        public Task<City> GetHaze(String hazeId)
         {
-            return this.hazeService.HazeDetailsById(hazeId);
+            return this.hazeService.CityDetailsById(hazeId, new City());
         }
 
         [Route("fetch/haze")]
-        public Task<IEnumerable<Haze>> GetHaze()
+        public Task<IEnumerable<State>> GetHaze()
         {
-            return this.hazeService.ListHazeInDetails();
-        }
-        
-        [Route("fetch/{weatherId}/weather")]
-        public Task<Weather> GetWeather(string weatherId)
-        {
-            return this.hazeService.WeatherDetailsById(weatherId);
-        }
-
-        [Route("fetch/weather")]
-        public Task<IEnumerable<Weather>> GetWeather()
-        {
-            return this.hazeService.ListWeatherInDetails();
+            return this.hazeService.ListCityInDetails();
         }
     }
 }

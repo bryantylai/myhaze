@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace HazeAPI.Models
+namespace HazeWin8
 {
     public class State
     {
         public string Name { get; set; }
-        public HashSet<City> Cities { get; set; }
+        public ObservableCollection<Haze> Hazes { get; set; }
     }
-
-    public class City
+    public class Haze
     {
-        public string ID { get; set; }
         public string Location { get; set; }
         public string PSI { get; set; }
         public string Date { get; set; }
