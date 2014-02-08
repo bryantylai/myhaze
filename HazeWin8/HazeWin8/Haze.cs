@@ -10,10 +10,12 @@ namespace HazeWin8
     public class State
     {
         public string Name { get; set; }
-        public ObservableCollection<Haze> Hazes { get; set; }
+        public ObservableCollection<City> Cities { get; set; }
     }
-    public class Haze
+
+    public class City
     {
+        public string ID { get; set; }
         public string Location { get; set; }
         public string PSI { get; set; }
         public string Date { get; set; }

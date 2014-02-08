@@ -46,5 +46,40 @@
             <TextBlock x:Name="pageTitle" Text="{StaticResource AppName}" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
         </Grid>
+
+        <!--<ProgressRing x:Name="progressRing" Grid.Row="1" IsActive="True" HorizontalAlignment="Center" VerticalAlignment="Center" Width="350" Height="350"/>-->
+        <GridView x:Name="HazeView" Grid.Row="1" Margin="110,0,10,0">
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
+            <GridView.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" FontSize="24" FontWeight="SemiBold"/>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                    <GroupStyle.Panel>
+                        <ItemsPanelTemplate>
+                            <VariableSizedWrapGrid Orientation="Vertical" Margin="0,0,80,0"/>
+                        </ItemsPanelTemplate>
+                    </GroupStyle.Panel>
+                </GroupStyle>
+            </GridView.GroupStyle>
+            <GridView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <TextBlock Text="{Binding PSI}" Foreground="{Binding Color}" HorizontalAlignment="Center" FontSize="96"/>
+                        <TextBlock Text="{Binding Location}" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" FontSize="28"/>
+                        <TextBlock TextWrapping="Wrap" TextAlignment="Left" HorizontalAlignment="Left" FontSize="28">
+                            <Run Text="{Binding Time}" />
+                            <Run Text="{Binding Date}" />
+                        </TextBlock>
+                    </Grid>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
     </Grid>
 </Page>

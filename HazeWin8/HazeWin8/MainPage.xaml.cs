@@ -68,14 +68,15 @@ namespace HazeWin8
         private void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             RestClient restClient = new RestClient();
-            restClient.Get<ObservableCollection<Haze>>("http://localhost:44956",
+            restClient.Get<ObservableCollection<State>>("http://localhost:44956/api/hazemy/fetch/haze",
                 (result) =>
                 {
                     CollectionViewSource collectionViewSource = new CollectionViewSource();
                     collectionViewSource.Source = result;
                     collectionViewSource.IsSourceGrouped = true;
-                    collectionViewSource.ItemsPath = new PropertyPath("Hazes");
-                };
+                    collectionViewSource.ItemsPath = new PropertyPath("Cities");
+                    HazeView.ItemsSource = collectionViewSource.View;
+                });
         }
 
         /// <summary>
