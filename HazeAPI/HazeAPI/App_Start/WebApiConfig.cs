@@ -16,7 +16,6 @@ namespace HazeAPI
             config.MapHttpAttributeRoutes();
 
             var appXmlType = config.Formatters.XmlFormatter.SupportedMediaTypes.FirstOrDefault(t => t.MediaType == "application/xml");
-            config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/plain"));
             config.Formatters.XmlFormatter.SupportedMediaTypes.Remove(appXmlType);
             config.Formatters.JsonFormatter.Indent = true;
         }

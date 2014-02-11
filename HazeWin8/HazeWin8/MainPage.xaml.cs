@@ -24,6 +24,7 @@ namespace HazeWin8
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private ObservableCollection<State> StateCollection = new ObservableCollection<State>();
 
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
@@ -68,7 +69,7 @@ namespace HazeWin8
         private void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             RestClient restClient = new RestClient();
-            restClient.Get<ObservableCollection<State>>("http://localhost:44956/api/hazemy/fetch/haze",
+            restClient.Get<ObservableCollection<State>>(
                 (result) =>
                 {
                     CollectionViewSource collectionViewSource = new CollectionViewSource();
@@ -76,6 +77,7 @@ namespace HazeWin8
                     collectionViewSource.IsSourceGrouped = true;
                     collectionViewSource.ItemsPath = new PropertyPath("Cities");
                     HazeView.ItemsSource = collectionViewSource.View;
+                    HazeView.SelectedItem = null;
                 });
         }
 
