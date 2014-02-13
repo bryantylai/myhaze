@@ -20,7 +20,7 @@ namespace HazeAPI.Controllers
             this.hazeService = new HazeService();
         }
 
-        [Route("haze/{hazeId}")]
+        [Route("{hazeId}")]
         public Task<City> GetHaze(String hazeId)
         {
             return this.hazeService.CityDetailsById(hazeId, new City());
