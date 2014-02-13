@@ -15,6 +15,16 @@ namespace HazeWin8
 
     public class City
     {
+        public City()
+        {
+            PSI = "??";
+            TimeDiff = "?? ago";
+            Color = "#666666";
+            Temperature = "??";
+            Humidity = "??";
+            Pressure = "??";
+        }
+
         public string ID { get; set; }
         public string Location { get; set; }
         public string PSI { get; set; }

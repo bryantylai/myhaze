@@ -68,17 +68,150 @@ namespace HazeWin8
         /// session. The state will be null the first time a page is visited.</param>
         private void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            RestClient restClient = new RestClient();
-            restClient.Get<ObservableCollection<State>>(
-                (result) =>
+            InitializeStateCollection();
+            BindUI();
+            UpdateCities();
+        }
+
+        private void UpdateCities()
+        {
+            foreach (State state in StateCollection)
+            {
+                foreach (City city in state.Cities)
                 {
-                    CollectionViewSource collectionViewSource = new CollectionViewSource();
-                    collectionViewSource.Source = result;
-                    collectionViewSource.IsSourceGrouped = true;
-                    collectionViewSource.ItemsPath = new PropertyPath("Cities");
-                    HazeView.ItemsSource = collectionViewSource.View;
-                    HazeView.SelectedItem = null;
-                });
+                    RestClient restClient = new RestClient();
+                    restClient.Get<City>(city.ID,
+                        (result) =>
+                        {
+                            if (result != null)
+                            {
+                                CopyValue(city, result);
+                            }
+                        });
+                }
+            }
+        }
+
+        private void CopyValue(City city, City result)
+        {
+            city.Color = result.Color;
+            city.Humidity = result.Humidity;
+            city.ImageURL = result.ImageURL;
+            city.Pressure = result.Pressure;
+            city.PSI = result.PSI;
+            city.Temperature = result.Temperature;
+            city.TimeDiff = result.TimeDiff;
+            BindUI();
+        }
+
+        private void InitializeStateCollection()
+        {
+            if (!(StateCollection.Count > 0))
+            {
+                State Johor = new State() { Name = "Johor", Cities = new ObservableCollection<City>() };
+                Johor.Cities.Add(new City() { ID = "kota_tinggi", Location = "Kota Tinggi" });
+                Johor.Cities.Add(new City() { ID = "larkin_lama", Location = "Larkin Lama" });
+                Johor.Cities.Add(new City() { ID = "muar", Location = "Muar" });
+                Johor.Cities.Add(new City() { ID = "pasir_gudang", Location = "Pasir Gudang" });
+
+                State Kedah = new State() { Name = "Kedah", Cities = new ObservableCollection<City>() };
+                Kedah.Cities.Add(new City() { ID = "alor_setar", Location = "Alor Setar" });
+                Kedah.Cities.Add(new City() { ID = "bakar_arang", Location = "Bakar Arang, Sg. Petani" });
+                Kedah.Cities.Add(new City() { ID = "langkawi", Location = "Langkawi" });
+
+                State Kelantan = new State() { Name = "Kelantan", Cities = new ObservableCollection<City>() };
+                Kelantan.Cities.Add(new City() { ID = "kota_bharu", Location = "Kota Bharu" });
+                Kelantan.Cities.Add(new City() { ID = "tanah_merah", Location = "Tanah Merah" });
+
+                State Melaka = new State() { Name = "Melaka", Cities = new ObservableCollection<City>() };
+                Melaka.Cities.Add(new City() { ID = "bandaraya_melaka", Location = "Bandaraya Melaka" });
+                Melaka.Cities.Add(new City() { ID = "bukit_rambai", Location = "Bukit Rambai" });
+
+                State NSembilan = new State() { Name = "Negeri Sembilan", Cities = new ObservableCollection<City>() };
+                NSembilan.Cities.Add(new City() { ID = "nilai", Location = "Nilai" });
+                NSembilan.Cities.Add(new City() { ID = "port_dickson", Location = "Port Dickson" });
+                NSembilan.Cities.Add(new City() { ID = "seremban", Location = "Seremban" });
+
+                State Pahang = new State() { Name = "Pahang", Cities = new ObservableCollection<City>() };
+                Pahang.Cities.Add(new City() { ID = "balok_baru", Location = "Balok Baru, Kuantan" });
+                Pahang.Cities.Add(new City() { ID = "indera_mahkota", Location = "Indera Mahkota, Kuantan" });
+                Pahang.Cities.Add(new City() { ID = "jerantut", Location = "Jerantut" });
+
+                State Perak = new State() { Name = "Perak", Cities = new ObservableCollection<City>() };
+                Perak.Cities.Add(new City() { ID = "jalan_tasek", Location = "Jalan Tasek, Ipoh" });
+                Perak.Cities.Add(new City() { ID = "air_putih", Location = "Kg. Air Putih, Taiping" });
+                Perak.Cities.Add(new City() { ID = "sk_jalan_pegoh", Location = "S K Jalan Pegoh, Ipoh" });
+                Perak.Cities.Add(new City() { ID = "seri_manjung", Location = "Seri Manjung" });
+                Perak.Cities.Add(new City() { ID = "tanjung_malim", Location = "Tanjung Malim" });
+
+                State Perlis = new State() { Name = "Perlis", Cities = new ObservableCollection<City>() };
+                Perlis.Cities.Add(new City() { ID = "kangar", Location = "Kangar" });
+
+                State Pinang = new State() { Name = "Pulau Pinang", Cities = new ObservableCollection<City>() };
+                Pinang.Cities.Add(new City() { ID = "perai", Location = "Perai" });
+                Pinang.Cities.Add(new City() { ID = "seberang_jaya_2", Location = "Seberang Jaya 2" });
+                Pinang.Cities.Add(new City() { ID = "usm", Location = "USM" });
+
+                State Sabah = new State() { Name = "Sabah", Cities = new ObservableCollection<City>() };
+                Sabah.Cities.Add(new City() { ID = "keningau", Location = "Keningau" });
+                Sabah.Cities.Add(new City() { ID = "kota_kinabalu", Location = "Kota Kinabalu" });
+                Sabah.Cities.Add(new City() { ID = "sandakan", Location = "Sandakan" });
+                Sabah.Cities.Add(new City() { ID = "tawau", Location = "Tawau" });
+
+                State Sarawak = new State() { Name = "Sarawak", Cities = new ObservableCollection<City>() };
+                Sarawak.Cities.Add(new City() { ID = "bintulu", Location = "Bintulu" });
+                Sarawak.Cities.Add(new City() { ID = "ilp_miri", Location = "ILP Miri" });
+                Sarawak.Cities.Add(new City() { ID = "kapit", Location = "Kapit" });
+                Sarawak.Cities.Add(new City() { ID = "kuching", Location = "Kuching" });
+                Sarawak.Cities.Add(new City() { ID = "limbang", Location = "Limbang" });
+                Sarawak.Cities.Add(new City() { ID = "miri", Location = "Miri" });
+                Sarawak.Cities.Add(new City() { ID = "samarahan", Location = "Samarahan" });
+                Sarawak.Cities.Add(new City() { ID = "sarikei", Location = "Sarikei" });
+                Sarawak.Cities.Add(new City() { ID = "sibu", Location = "Sibu" });
+                Sarawak.Cities.Add(new City() { ID = "sri_aman", Location = "Sri Aman" });
+
+                State Selangor = new State() { Name = "Selangor", Cities = new ObservableCollection<City>() };
+                Selangor.Cities.Add(new City() { ID = "banting", Location = "Banting" });
+                Selangor.Cities.Add(new City() { ID = "kuala_selangor", Location = "Kuala Selangor" });
+                Selangor.Cities.Add(new City() { ID = "pelabuhan_klang", Location = "Pelabuhan Klang" });
+                Selangor.Cities.Add(new City() { ID = "petaling_jaya", Location = "(Puchong) Petaling Jaya" });
+                Selangor.Cities.Add(new City() { ID = "shah_alam", Location = "Shah Alam" });
+
+                State Terengganu = new State() { Name = "Terengganu", Cities = new ObservableCollection<City>() };
+                Terengganu.Cities.Add(new City() { ID = "kemaman", Location = "Kemaman" });
+                Terengganu.Cities.Add(new City() { ID = "kuala_terengganu", Location = "Kuala Terengganu" });
+
+                State Wilayah = new State() { Name = "Wilayah Persekutuan", Cities = new ObservableCollection<City>() };
+                Wilayah.Cities.Add(new City() { ID = "batu_muda", Location = "Batu Muda, Kuala Lumpur" });
+                Wilayah.Cities.Add(new City() { ID = "cheras", Location = "Cheras, Kuala Lumpur" });
+                Wilayah.Cities.Add(new City() { ID = "labuan", Location = "Labuan" });
+                Wilayah.Cities.Add(new City() { ID = "putrajaya", Location = "Putrajaya" });
+
+                StateCollection.Add(Johor);
+                StateCollection.Add(Kedah);
+                StateCollection.Add(Kelantan);
+                StateCollection.Add(Melaka);
+                StateCollection.Add(NSembilan);
+                StateCollection.Add(Pahang);
+                StateCollection.Add(Perak);
+                StateCollection.Add(Perlis);
+                StateCollection.Add(Pinang);
+                StateCollection.Add(Sabah);
+                StateCollection.Add(Sarawak);
+                StateCollection.Add(Selangor);
+                StateCollection.Add(Terengganu);
+                StateCollection.Add(Wilayah);
+            }
+        }
+
+        private void BindUI()
+        {
+            CollectionViewSource collectionViewSource = new CollectionViewSource();
+            collectionViewSource.Source = StateCollection;
+            collectionViewSource.IsSourceGrouped = true;
+            collectionViewSource.ItemsPath = new PropertyPath("Cities");
+            HazeView.ItemsSource = collectionViewSource.View;
+            HazeView.SelectedItem = null;
         }
 
         /// <summary>
