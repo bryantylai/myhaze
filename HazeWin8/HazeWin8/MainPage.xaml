@@ -50,7 +50,7 @@
                         AutomationProperties.AutomationId="BackButton"
                         AutomationProperties.ItemType="Navigation Button"/>
             <TextBlock x:Name="pageTitle" Text="{StaticResource AppName}" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
-                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40" Foreground="WhiteSmoke" FontFamily="Segoe Print"/>
+                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40" Foreground="Black" FontFamily="Segoe Print"/>
         </Grid>
         <GridView x:Name="HazeView" Grid.Row="1" Margin="110,0,0,0" IsItemClickEnabled="False">
             <GridView.ItemsPanel>
@@ -62,7 +62,7 @@
                 <GroupStyle>
                     <GroupStyle.HeaderTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Name}" FontSize="24" FontWeight="SemiBold" FontFamily="Segoe Print"/>
+                            <TextBlock Text="{Binding Name}" FontSize="24" FontWeight="SemiBold" FontFamily="Segoe Print" Foreground="Black"/>
                         </DataTemplate>
                     </GroupStyle.HeaderTemplate>
                     <GroupStyle.Panel>
@@ -76,18 +76,12 @@
                 <DataTemplate>
                     <Grid Width="250" Height="500">
                         <Grid Background="AntiqueWhite" Opacity="0.5" />
-                        <Grid HorizontalAlignment="Center">
-                            <TextBlock Text="{Binding Location}" FontSize="24" TextAlignment="Center" VerticalAlignment="Top" TextWrapping="WrapWholeWords" FontFamily="Segoe Print"/>
-                            <Grid Width="225" Height="225" VerticalAlignment="Center">
-                                <Ellipse Fill="{Binding Color}" />
-                                <TextBlock Text="{Binding PSI}" FontSize="72" TextAlignment="Center" FontFamily="Segoe Print"/>
-                            </Grid>
+                        <TextBlock Text="{Binding Location}" FontSize="24" TextAlignment="Center" VerticalAlignment="Top" TextWrapping="WrapWholeWords" FontFamily="Segoe Print" Margin="0" HorizontalAlignment="Center" Foreground="Black"/>
+                        <Grid Width="225" Height="225" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,100">
+                        	<Ellipse Fill="{Binding Color}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="225" Height="225" />
+                            <TextBlock Text="{Binding PSI}" FontSize="72" TextAlignment="Center" FontFamily="Segoe Print" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
                         </Grid>
-                        <TextBlock FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Bottom" TextAlignment="Center" FontFamily="Segoe Print">
-                            <Run Text="{Binding Time}" />
-                            <LineBreak />
-                            <Run Text="{Binding Date}" />
-                        </TextBlock>
+                        <TextBlock Text="{Binding TimeDiff}" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Bottom" TextAlignment="Center" FontFamily="Segoe Print" Foreground="Black"/>
                     </Grid>
                 </DataTemplate>
             </GridView.ItemTemplate>

@@ -37,6 +37,7 @@ namespace HazeAPI.Services
                                            where node.Name.Equals("div")
                                            select node);
 
+            String dateTime = "";
             foreach (HtmlNode divNode in divNodes)
             {
                 if (divNode.HasAttributes && divNode.Attributes.Contains("class"))
@@ -48,15 +49,24 @@ namespace HazeAPI.Services
                             city.PSI = divNode.InnerText;
                             break;
                         case "psinowdate":
-                            city.Time = divNode.InnerText;
+                           dateTime += divNode.InnerText.Replace("at ", "");
                             break;
                         case "psiolddate":
-                            if (city.Date == null)
+                            if (city.TimeDiff == null)
                             {
                                 HtmlAttribute emptyStyleAttribute = divNode.Attributes.AttributesWithName("style").First();
                                 if (emptyStyleAttribute.Value == "")
                                 {
-                                    city.Date = divNode.InnerText;
+                                    dateTime += divNode.InnerText;
+                                    TimeSpan diff = DateTime.UtcNow.Add(new TimeSpan(8,0,0)) - DateTime.SpecifyKind(DateTime.Parse(dateTime), DateTimeKind.Utc);
+                                    if (diff.Hours < 1)
+                                    {
+                                        city.TimeDiff = diff.Minutes + " minute(s) ago";
+                                    }
+                                    else
+                                    {
+                                        city.TimeDiff = diff.Hours + " hour(s) ago";
+                                    }
                                 }
                             }
                             break;

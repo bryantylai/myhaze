@@ -18,8 +18,7 @@ namespace HazeWin8
         public string ID { get; set; }
         public string Location { get; set; }
         public string PSI { get; set; }
-        public string Date { get; set; }
-        public string Time { get; set; }
+        public string TimeDiff { get; set; }
         public string Color { get; set; }
         public string ImageURL { get; set; }
         public string Temperature { get; set; }
