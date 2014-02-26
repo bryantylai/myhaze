@@ -206,12 +206,9 @@ namespace HazeWin8
 
         private void BindUI()
         {
-            CollectionViewSource collectionViewSource = new CollectionViewSource();
             collectionViewSource.Source = StateCollection;
-            collectionViewSource.IsSourceGrouped = true;
             collectionViewSource.ItemsPath = new PropertyPath("Cities");
-            HazeView.ItemsSource = collectionViewSource.View;
-            HazeView.SelectedItem = null;
+            HazeZoomedInGridView.SelectedItem = null;
         }
 
         /// <summary>
@@ -248,5 +245,13 @@ namespace HazeWin8
         }
 
         #endregion
+
+        private void HazeSemanticZoom_ViewChangeStarted(object sender, SemanticZoomViewChangedEventArgs e)
+        {
+            if (e.IsSourceZoomedInView == false)
+            {
+                e.DestinationItem.Item = e.SourceItem.Item;
+            }
+        }
     }
 }

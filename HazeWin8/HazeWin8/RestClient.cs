@@ -31,7 +31,13 @@ namespace HazeWin8
             if (internalServerErr)
             {
                 MessageDialog errorMessage = new MessageDialog("There has been an error while retrieving data. Please try again later.");
-                await errorMessage.ShowAsync();
+                try
+                {
+                    await errorMessage.ShowAsync();
+                }
+                catch (UnauthorizedAccessException)
+                {
+                }
             }
         }
     }
