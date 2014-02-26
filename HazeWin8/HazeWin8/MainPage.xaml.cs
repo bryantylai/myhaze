@@ -25,6 +25,7 @@ namespace HazeWin8
     public sealed partial class MainPage : Page
     {
         private ObservableCollection<State> StateCollection = new ObservableCollection<State>();
+        private int count = 0;
 
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
@@ -79,6 +80,7 @@ namespace HazeWin8
             {
                 foreach (City city in state.Cities)
                 {
+                    count++;
                     RestClient restClient = new RestClient();
                     restClient.Get<City>(city.ID,
                         (result) =>
@@ -101,7 +103,10 @@ namespace HazeWin8
             city.PSI = result.PSI;
             city.Temperature = result.Temperature;
             city.TimeDiff = result.TimeDiff;
-            BindUI();
+            if ((--count) == 0)
+            {
+                BindUI();
+            }
         }
 
         private void InitializeStateCollection()

@@ -11,12 +11,11 @@ namespace HazeWin8
 {
     public class RestClient
     {
-        //private const string API_URL = "http://localhost:44956/api/hazemy/";
-        private const string API_URL = "http://myhaze-api.azurewebsites.net/api/hazemy/";
+        private const string API_URL = "http://localhost:44956/api/hazemy/";
+        //private const string API_URL = "http://myhaze-api.azurewebsites.net/api/hazemy/";
         private HttpClient client = new HttpClient();
         public async void Get<T>(string hazeId, Action<T> callback)
         {
-            bool internalServerErr = false;
             try
             {
                 var result = await client.GetStringAsync(API_URL + hazeId);
@@ -24,20 +23,7 @@ namespace HazeWin8
             }
             catch (Exception)
             {
-                internalServerErr = true;
                 callback(default(T));
-            }
-
-            if (internalServerErr)
-            {
-                MessageDialog errorMessage = new MessageDialog("There has been an error while retrieving data. Please try again later.");
-                try
-                {
-                    await errorMessage.ShowAsync();
-                }
-                catch (UnauthorizedAccessException)
-                {
-                }
             }
         }
     }

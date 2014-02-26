@@ -12,7 +12,7 @@
 
     <Page.Resources>
         <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
-        <x:String x:Key="AppName">Haze MY</x:String>
+        <x:String x:Key="AppName">haze my</x:String>
         <CollectionViewSource x:Name="collectionViewSource" IsSourceGrouped="true"/>
     </Page.Resources>
 
@@ -56,6 +56,7 @@
 
         <SemanticZoom x:Name="HazeSemanticZoom" 
                       Grid.Row="1" 
+                      IsZoomedInViewActive="False"
                       ViewChangeStarted="HazeSemanticZoom_ViewChangeStarted">
             <SemanticZoom.ZoomedInView>
                 <GridView x:Name="HazeZoomedInGridView"
