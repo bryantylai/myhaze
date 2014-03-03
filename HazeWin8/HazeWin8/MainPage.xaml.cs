@@ -14,6 +14,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using System.Collections.ObjectModel;
+using Windows.UI.Popups;
+using Windows.ApplicationModel.DataTransfer;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 
@@ -69,6 +71,8 @@ namespace HazeWin8
         /// session. The state will be null the first time a page is visited.</param>
         private void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
+            DataTransferManager.GetForCurrentView().DataRequested += OnDataRequested;
+
             InitializeStateCollection();
             BindUI();
             UpdateCities();
@@ -226,6 +230,7 @@ namespace HazeWin8
         /// serializable state.</param>
         private void navigationHelper_SaveState(object sender, SaveStateEventArgs e)
         {
+            DataTransferManager.GetForCurrentView().DataRequested -= OnDataRequested;
         }
 
         #region NavigationHelper registration
@@ -255,8 +260,35 @@ namespace HazeWin8
         {
             if (e.IsSourceZoomedInView == false)
             {
-                e.DestinationItem.Item = e.SourceItem.Item;
+                HazeZoomedInGridView.SelectedItem = HazeZoomedOutGridView.SelectedItem = e.DestinationItem.Item = e.SourceItem.Item;
             }
         }
+
+        private void HazeZoomedInGridView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            HazeZoomedOutGridView.SelectedItem = HazeZoomedInGridView.SelectedItem = (City)e.ClickedItem;
+
+            DataTransferManager.ShowShareUI();
+        }
+
+        async void OnDataRequested(DataTransferManager sender, DataRequestedEventArgs args)
+        {
+            try
+            {
+                var request = args.Request;
+
+                City c = (City)HazeZoomedInGridView.SelectedItem;
+
+                request.Data.Properties.Title = "MY Haze";
+                request.Data.SetText("Current API at " + c.Location + " is " + c.PSI + ". Updated " + c.TimeDiff + " via MY Haze #haze #myhaze");
+                return;
+            }
+            catch (Exception)
+            {
+            }
+
+            await new MessageDialog("You have not selected any API to share with.").ShowAsync();
+        }
+
     }
 }

@@ -11,8 +11,8 @@ namespace HazeWin8
 {
     public class RestClient
     {
-        private const string API_URL = "http://localhost:44956/api/hazemy/";
-        //private const string API_URL = "http://myhaze-api.azurewebsites.net/api/hazemy/";
+        //private const string API_URL = "http://localhost:44956/api/hazemy/";
+        private const string API_URL = "http://myhaze-api.azurewebsites.net/api/hazemy/";
         private HttpClient client = new HttpClient();
         public async void Get<T>(string hazeId, Action<T> callback)
         {

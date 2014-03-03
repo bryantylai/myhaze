@@ -61,7 +61,9 @@
             <SemanticZoom.ZoomedInView>
                 <GridView x:Name="HazeZoomedInGridView"
                           Padding="110,0,0,0" 
-                          ItemsSource="{Binding Source={StaticResource collectionViewSource}}">
+                          ItemsSource="{Binding Source={StaticResource collectionViewSource}}"
+                          IsItemClickEnabled="True"
+                          ItemClick="HazeZoomedInGridView_ItemClick">
                     <GridView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <VirtualizingStackPanel Orientation="Horizontal"/>
@@ -106,8 +108,8 @@
                                             <TextBlock Text="{Binding Temperature}" FontSize="24" TextAlignment="Center" FontFamily="Segoe Print" Foreground="Black" Grid.Row="0" Grid.Column="1" />
                                             <TextBlock Text="Humid" FontSize="24" TextAlignment="Center" FontFamily="Segoe Print" Foreground="Black" Grid.Row="1" Grid.Column="0" />
                                             <TextBlock Text="{Binding Humidity}" FontSize="24" TextAlignment="Center" FontFamily="Segoe Print" Foreground="Black" Grid.Row="1" Grid.Column="1" />
-                                            <TextBlock Text="Weather" FontSize="24" TextAlignment="Center" FontFamily="Segoe Print" Foreground="Black" Grid.Row="2" Grid.Column="0" />
-                                            <Image Source="{Binding ImageURL}" Width="50" Height="50" Grid.Row="2" Grid.Column="1" />
+                                            <!--<TextBlock Text="Weather" FontSize="24" TextAlignment="Center" FontFamily="Segoe Print" Foreground="Black" Grid.Row="2" Grid.Column="0" />
+                                            <Image Source="{Binding ImageURL}" Width="50" Height="50" Grid.Row="2" Grid.Column="1" />-->
                                         </Grid>
                                     </StackPanel>
                                     <TextBlock Text="{Binding TimeDiff}" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Bottom" TextAlignment="Center" FontFamily="Segoe Print" Foreground="Black"/>
@@ -118,7 +120,8 @@
                 </GridView>
             </SemanticZoom.ZoomedInView>
             <SemanticZoom.ZoomedOutView>
-                <GridView Padding="110,0,0,0" 
+                <GridView x:Name="HazeZoomedOutGridView"
+                          Padding="110,0,0,0" 
                           ItemsSource="{Binding Source={StaticResource collectionViewSource}}">
                     <GridView.GroupStyle>
                         <GroupStyle>
