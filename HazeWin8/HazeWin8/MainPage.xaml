@@ -8,6 +8,7 @@
     xmlns:common="using:HazeWin8.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ad="using:AdRotator"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -22,11 +23,6 @@
         * Row 1 contains the rest of the page layout
     -->
     <Grid>
-        <Grid.ChildrenTransitions>
-            <TransitionCollection>
-                <EntranceThemeTransition/>
-            </TransitionCollection>
-        </Grid.ChildrenTransitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="140"/>
             <RowDefinition Height="*"/>
@@ -43,6 +39,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="728" />
             </Grid.ColumnDefinitions>
             <Button x:Name="backButton" Margin="39,59,39,0" Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
                             Style="{StaticResource NavigationBackButtonNormalStyle}"
@@ -52,6 +49,13 @@
                             AutomationProperties.ItemType="Navigation Button"/>
             <TextBlock x:Name="pageTitle" Text="{StaticResource AppName}" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                             IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40" Foreground="Black" FontFamily="Segoe Print"/>
+            <Grid Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,50,0">
+                <ad:AdRotatorControl x:Name="Win8AdRotator"
+                                     Height="90" Width="728"
+                                     AdHeight="90" AdWidth="728"
+                                     LocalSettingsLocation="defaultAdSettings.xml"
+                                     AutoStartAds="True"/>
+            </Grid>
         </Grid>
 
         <SemanticZoom x:Name="HazeSemanticZoom" 
