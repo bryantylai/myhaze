@@ -272,6 +272,12 @@ namespace HazeWin8
             if (e.IsSourceZoomedInView == false)
             {
                 HazeZoomedInGridView.SelectedItem = HazeZoomedOutGridView.SelectedItem = e.DestinationItem.Item = e.SourceItem.Item;
+                backButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                HazeZoomedInGridView.SelectedItem = HazeZoomedOutGridView.SelectedItem = e.DestinationItem.Item = e.SourceItem.Item = null;
+                backButton.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -291,7 +297,7 @@ namespace HazeWin8
                 City c = (City)HazeZoomedInGridView.SelectedItem;
 
                 request.Data.Properties.Title = "MY Haze";
-                request.Data.SetText("Current API at " + c.Location + " is " + c.PSI + ". Updated " + c.TimeDiff + " via MY Haze #haze #myhaze");
+                request.Data.SetText("Current API at " + c.Location + " is " + c.PSI + ". Updated " + c.TimeDiff + " via Haze MY #haze #myhaze http://tinyurl.com/hazemy");
                 return;
             }
             catch (Exception)
@@ -299,6 +305,14 @@ namespace HazeWin8
             }
 
             await new MessageDialog("You have not selected any API to share with.").ShowAsync();
+        }
+
+        private void backButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (backButton.Visibility == Visibility.Visible)
+            {
+                HazeSemanticZoom.IsZoomedInViewActive = false;
+            }
         }
 
     }

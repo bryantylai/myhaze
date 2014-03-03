@@ -41,12 +41,9 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="728" />
             </Grid.ColumnDefinitions>
-            <Button x:Name="backButton" Margin="39,59,39,0" Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
+            <Button x:Name="backButton" Margin="39,59,39,0" 
                             Style="{StaticResource NavigationBackButtonNormalStyle}"
-                            VerticalAlignment="Top"
-                            AutomationProperties.Name="Back"
-                            AutomationProperties.AutomationId="BackButton"
-                            AutomationProperties.ItemType="Navigation Button"/>
+                            VerticalAlignment="Top" Tapped="backButton_Tapped"/>
             <TextBlock x:Name="pageTitle" Text="{StaticResource AppName}" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                             IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40" Foreground="Black" FontFamily="Segoe Print"/>
             <Grid Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,50,0">
