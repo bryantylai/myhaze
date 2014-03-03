@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Navigation;
 using System.Collections.ObjectModel;
 using Windows.UI.Popups;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.UI.ApplicationSettings;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 
@@ -74,11 +75,18 @@ namespace HazeWin8
         /// session. The state will be null the first time a page is visited.</param>
         private void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
+            SettingsPane.GetForCurrentView().CommandsRequested += OnCommandsRequested;
             DataTransferManager.GetForCurrentView().DataRequested += OnDataRequested;
 
             InitializeStateCollection();
             BindUI();
             UpdateCities();
+        }
+
+        void OnCommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
+        {
+            SettingsCommand generalCommand = new SettingsCommand("DefaultsId", "Privacy Policy + Support", (handler) => new PrivacyFlyout().Show());
+            args.Request.ApplicationCommands.Add(generalCommand);
         }
 
         private void UpdateCities()
