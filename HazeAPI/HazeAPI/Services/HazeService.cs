@@ -23,10 +23,10 @@ namespace HazeAPI.Services
         internal async Task<City> CityDetailsById(string CityId, City city)
         {
             string result = await httpClient.GetStringAsync(BASE_URL + CityId);
-            return await ProcessResultToCity(result, city);
+            return ProcessResultToCity(result, city);
         }
 
-        private async Task<City> ProcessResultToCity(string result, City city)
+        private City ProcessResultToCity(string result, City city)
         {
             HtmlDocument htmlDocument = new HtmlDocument();
             htmlDocument.OptionFixNestedTags = true;
@@ -81,80 +81,71 @@ namespace HazeAPI.Services
                 }
             }
 
-            IEnumerable<HtmlNode> aNodes = (from node in allNodes.DescendantsAndSelf()
-                                              where node.Name.Equals("a")
-                                              select node);
-
-            foreach (HtmlNode aNode in aNodes)
-            {
-                if (aNode.HasAttributes && aNode.Attributes.Contains("class"))
-                {
-                    HtmlAttribute classAttribute = aNode.Attributes.AttributesWithName("class").First();
-                    if (classAttribute.Value.Contains("button cam-selector"))
-                    {
-                        if (aNode.InnerText.Equals("LIVE weather info"))
-                        {
-                            string weatherURL = aNode.Attributes.AttributesWithName("href").First().Value;
-                            city = await ProcessResultToWeatherCity(weatherURL, city);
-                        }
-                    }
-                }
-            }
-
             return city;
         }
 
-        private async Task<City> ProcessResultToWeatherCity(string weatherURL, City city)
+        internal async Task<Haze> HazeDetailsById(string hazeId, Haze haze)
         {
-            string result = await httpClient.GetStringAsync(weatherURL);
-            return ProcessResultToWeather(result, city);
+            string result = await httpClient.GetStringAsync(BASE_URL + hazeId);
+            return ProcessResultToHaze(result, haze);
         }
 
-        private City ProcessResultToWeather(string result, City city)
+        private Haze ProcessResultToHaze(string result, Haze haze)
         {
             HtmlDocument htmlDocument = new HtmlDocument();
             htmlDocument.OptionFixNestedTags = true;
             htmlDocument.LoadHtml(result);
             HtmlNode allNodes = htmlDocument.DocumentNode;
 
-            IEnumerable<HtmlNode> h2Nodes = (from node in allNodes.DescendantsAndSelf()
-                                           where node.Name.Equals("h2")
-                                           select node);
+            IEnumerable<HtmlNode> divNodes = (from node in allNodes.DescendantsAndSelf()
+                                              where node.Name.Equals("div")
+                                              select node);
 
-            foreach (HtmlNode h2Node in h2Nodes)
+            String dateTime = "";
+            foreach (HtmlNode divNode in divNodes)
             {
-                HtmlDocument h2Document = new HtmlDocument();
-                h2Document.OptionFixNestedTags = true;
-                h2Document.LoadHtml(h2Node.InnerHtml);
-                HtmlNode h2HtmlNodes = h2Document.DocumentNode;
-
-                HtmlNode imgNode = (from node in h2HtmlNodes.DescendantsAndSelf()
-                                                 where node.Name.Equals("img")
-                                                 select node).First();
-
-                city.ImageURL = "http://apps.evozi.com/myapi/" + imgNode.Attributes.AttributesWithName("data-cfsrc").First().Value;
-                string temp = h2Node.InnerText.Replace(" ", "");
-                city.Temperature = temp.Insert(temp.IndexOf("°"), " ");
-            }
-
-            IEnumerable<HtmlNode> tdNodes = (from node in allNodes.DescendantsAndSelf()
-                                             where node.Name.Equals("td")
-                                             select node);
-
-            foreach (HtmlNode tdNode in tdNodes)
-            {
-                switch (tdNode.InnerText)
+                if (divNode.HasAttributes && divNode.Attributes.Contains("class"))
                 {
-                    case "Pressure":
-                        city.Pressure = tdNode.NextSibling.InnerText;
-                        break;
-                    case "Humidity":
-                        city.Humidity = tdNode.NextSibling.InnerText;
-                        break;
+                    HtmlAttribute classAttribute = divNode.Attributes.AttributesWithName("class").First();
+                    switch (classAttribute.Value)
+                    {
+                        case "psinow":
+                            haze.PSI = divNode.InnerText;
+                            break;
+                        case "psinowdate":
+                            dateTime += divNode.InnerText.Replace("at ", "");
+                            break;
+                        case "psiolddate":
+                            if (haze.TimeDiff == null)
+                            {
+                                HtmlAttribute emptyStyleAttribute = divNode.Attributes.AttributesWithName("style").First();
+                                if (emptyStyleAttribute.Value == "")
+                                {
+                                    dateTime += divNode.InnerText;
+                                    TimeSpan diff = DateTime.UtcNow.Add(new TimeSpan(8, 0, 0)) - DateTime.SpecifyKind(DateTime.Parse(dateTime), DateTimeKind.Utc);
+                                    if (diff.Hours < 1)
+                                    {
+                                        haze.TimeDiff = diff.Minutes + " minute(s) ago";
+                                    }
+                                    else
+                                    {
+                                        haze.TimeDiff = diff.Hours + " hour(s) ago";
+                                    }
+                                }
+                            }
+                            break;
+                        case "psistatus":
+                            HtmlAttribute styleAttribute = divNode.Attributes.AttributesWithName("style").First();
+                            string style = styleAttribute.Value;
+                            haze.Color = style.Substring(style.IndexOf(":") + 1, 7);
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
 
-            return city;
+            return haze;
         }
     }
 }

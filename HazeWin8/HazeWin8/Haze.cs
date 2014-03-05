@@ -10,19 +10,16 @@ namespace HazeWin8
     public class State
     {
         public string Name { get; set; }
-        public ObservableCollection<City> Cities { get; set; }
+        public ObservableCollection<Haze> HazeCollection { get; set; }
     }
 
-    public class City
+    public class Haze
     {
-        public City()
+        public Haze()
         {
             PSI = "??";
             TimeDiff = "?? ago";
             Color = "#666666";
-            Temperature = "??";
-            Humidity = "??";
-            Pressure = "??";
         }
 
         public string ID { get; set; }
@@ -30,9 +27,5 @@ namespace HazeWin8
         public string PSI { get; set; }
         public string TimeDiff { get; set; }
         public string Color { get; set; }
-        public string ImageURL { get; set; }
-        public string Temperature { get; set; }
-        public string Humidity { get; set; }
-        public string Pressure { get; set; }
     }
 }

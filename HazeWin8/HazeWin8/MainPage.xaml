@@ -17,6 +17,14 @@
         <CollectionViewSource x:Name="collectionViewSource" IsSourceGrouped="true"/>
     </Page.Resources>
 
+    <Page.BottomAppBar>
+        <AppBar>
+            <StackPanel>
+                <AppBarButton x:Name="RefreshAppBarButton" HorizontalAlignment="Right" Icon="Refresh" Label="refresh" Tapped="RefreshAppBarButton_Tapped"/>
+            </StackPanel>
+        </AppBar>
+    </Page.BottomAppBar>
+
     <!--
         This grid acts as a root panel for the page that defines two rows:
         * Row 0 contains the back button and page title
@@ -94,23 +102,6 @@
                                         <Grid Width="225" Height="225">
                                             <Ellipse Fill="{Binding Color}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="225" Height="225" />
                                             <TextBlock Text="{Binding PSI}" FontSize="72" TextAlignment="Center" FontFamily="Segoe Print" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
-                                        </Grid>
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition />
-                                                <RowDefinition />
-                                                <RowDefinition />
-                                            </Grid.RowDefinitions>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="2*" />
-                                                <ColumnDefinition />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Text="Temp" FontSize="24" TextAlignment="Center" FontFamily="Segoe Print" Foreground="Black" Grid.Row="0" Grid.Column="0" />
-                                            <TextBlock Text="{Binding Temperature}" FontSize="24" TextAlignment="Center" FontFamily="Segoe Print" Foreground="Black" Grid.Row="0" Grid.Column="1" />
-                                            <TextBlock Text="Humid" FontSize="24" TextAlignment="Center" FontFamily="Segoe Print" Foreground="Black" Grid.Row="1" Grid.Column="0" />
-                                            <TextBlock Text="{Binding Humidity}" FontSize="24" TextAlignment="Center" FontFamily="Segoe Print" Foreground="Black" Grid.Row="1" Grid.Column="1" />
-                                            <!--<TextBlock Text="Weather" FontSize="24" TextAlignment="Center" FontFamily="Segoe Print" Foreground="Black" Grid.Row="2" Grid.Column="0" />
-                                            <Image Source="{Binding ImageURL}" Width="50" Height="50" Grid.Row="2" Grid.Column="1" />-->
                                         </Grid>
                                     </StackPanel>
                                     <TextBlock Text="{Binding TimeDiff}" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Bottom" TextAlignment="Center" FontFamily="Segoe Print" Foreground="Black"/>
