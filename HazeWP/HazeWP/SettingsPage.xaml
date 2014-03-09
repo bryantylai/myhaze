@@ -1,0 +1,73 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="HazeWP.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="False">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="#FFDADADA">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Height="90" Width="480" HorizontalAlignment="Center" Background="Beige">
+
+        </Grid>
+
+        <TextBlock x:Name="ApplicationTitle" Margin="12,5" Grid.Row="1" HorizontalAlignment="Right" Text="Haze MY" Foreground="Black" FontWeight="ExtraBlack" FontSize="32" FontFamily="/HazeWP;component/Fonts/Fonts.zip#Andy"/>
+
+        <!--ContentPanel - place additional content here-->
+        <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <toolkit:ListPicker x:Name="LocationListPicker" Background="Transparent" BorderBrush="Transparent">
+                <toolkit:ListPicker.Header>
+                    <TextBlock Text="Location" Foreground="Black" FontSize="{StaticResource PhoneFontSizeMediumLarge}" FontWeight="SemiBold" />
+                </toolkit:ListPicker.Header>
+                <toolkit:ListPicker.FullModeHeader>
+                    Location
+                </toolkit:ListPicker.FullModeHeader>
+                <toolkit:ListPicker.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" Foreground="Black" HorizontalAlignment="Center" FontFamily="/HazeWP;component/Fonts/Fonts.zip#Segoe Print" FontWeight="Bold" FontSize="{StaticResource PhoneFontSizeNormal}"/>
+                    </DataTemplate>
+                </toolkit:ListPicker.ItemTemplate>
+                <toolkit:ListPicker.FullModeItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" Foreground="{StaticResource PhoneContrastBackgroundBrush}" FontSize="28" Margin="0,10" />
+                    </DataTemplate>
+                </toolkit:ListPicker.FullModeItemTemplate>
+            </toolkit:ListPicker>
+            <StackPanel>
+                <toolkit:ToggleSwitch x:Name="PushNotificationToggleSwitch" Foreground="Black" Checked="PushNotificationToggleSwitch_Checked" Unchecked="PushNotificationToggleSwitch_Unchecked">
+                    <toolkit:ToggleSwitch.Header>
+                        <TextBlock Text="Push Notification" Foreground="Black" FontSize="{StaticResource PhoneFontSizeMediumLarge}" FontWeight="SemiBold" />
+                    </toolkit:ToggleSwitch.Header>
+                </toolkit:ToggleSwitch>
+                <toolkit:TimePicker x:Name="StartTimePicker" Foreground="Black" BorderBrush="Black" Visibility="Collapsed" ValueChanged="StartTimePicker_ValueChanged">
+                    <toolkit:TimePicker.Header>
+                        <TextBlock Text="Enabled At" Foreground="Black" FontSize="{StaticResource PhoneFontSizeMediumLarge}" FontWeight="SemiBold" />
+                    </toolkit:TimePicker.Header>
+                </toolkit:TimePicker>
+                <toolkit:TimePicker x:Name="EndTimePicker" Foreground="Black" BorderBrush="Black" Visibility="Collapsed" ValueChanged="EndTimePicker_ValueChanged">
+                    <toolkit:TimePicker.Header>
+                        <TextBlock Text="Disabled At" Foreground="Black" FontSize="{StaticResource PhoneFontSizeMediumLarge}" FontWeight="SemiBold" />
+                    </toolkit:TimePicker.Header>
+                </toolkit:TimePicker>
+            </StackPanel>
+            <Button x:Name="ReviewButton" Content="Review" BorderBrush="Black" Foreground="Black" Click="ReviewButton_Click" />
+            <Button x:Name="EmailDevButton" Content="Email Developer" BorderBrush="Black" Foreground="Black" Click="EmailDevButton_Click" />
+        </StackPanel>
+    </Grid>
+
+</phone:PhoneApplicationPage>
