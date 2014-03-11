@@ -33,10 +33,12 @@ namespace HazeAPI.Services
             return ProcessResultToHaze(result, haze);
         }
 
-        internal async Task<IEnumerable<History>> HazeHistoryById(string hazeId, LinkedList<History> historyList)
+        internal async Task<HazeWithHistory> HazeHistoryById(string hazeId, HazeWithHistory hazeWithHistory)
         {
             string result = await httpClient.GetStringAsync(BASE_URL + hazeId);
-            return ProcessResultToHazeHistory(result, historyList);
+            ProcessResultToHaze(result, hazeWithHistory.Haze);
+            ProcessResultToHazeHistory(result, hazeWithHistory.Histories);
+            return hazeWithHistory;
         }
 
         [Obsolete]

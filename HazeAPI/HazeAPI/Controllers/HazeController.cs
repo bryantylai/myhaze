@@ -48,10 +48,13 @@ namespace HazeAPI.Controllers
         /// </summary>
         /// <param name="hazeId">Haze Id</param>
         /// <returns>JSON response of History objects</returns>
-        [Route("haze/{hazeId}/history")]
-        public async Task<IEnumerable<History>> GetHazeWithHistoryById(string hazeId)
+        [Route("haze/history/{hazeId}")]
+        public async Task<HazeWithHistory> GetHazeWithHistoryById(string hazeId)
         {
-            return await this.hazeService.HazeHistoryById(hazeId, new LinkedList<History>());
+            HazeWithHistory hazeWithHistory = new HazeWithHistory();
+            hazeWithHistory.Haze = new Haze();
+            hazeWithHistory.Histories = new LinkedList<History>();
+            return await this.hazeService.HazeHistoryById(hazeId, hazeWithHistory);
         }
     }
 }
