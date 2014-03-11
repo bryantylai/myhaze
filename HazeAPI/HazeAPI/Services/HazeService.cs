@@ -20,12 +20,26 @@ namespace HazeAPI.Services
             this.httpClient = new HttpClient();
         }
 
+        [Obsolete]
         internal async Task<City> CityDetailsById(string CityId, City city)
         {
             string result = await httpClient.GetStringAsync(BASE_URL + CityId);
             return ProcessResultToCity(result, city);
         }
 
+        internal async Task<Haze> HazeDetailsById(string hazeId, Haze haze)
+        {
+            string result = await httpClient.GetStringAsync(BASE_URL + hazeId);
+            return ProcessResultToHaze(result, haze);
+        }
+
+        internal async Task<IEnumerable<History>> HazeHistoryById(string hazeId, LinkedList<History> historyList)
+        {
+            string result = await httpClient.GetStringAsync(BASE_URL + hazeId);
+            return ProcessResultToHazeHistory(result, historyList);
+        }
+
+        [Obsolete]
         private City ProcessResultToCity(string result, City city)
         {
             HtmlDocument htmlDocument = new HtmlDocument();
@@ -84,12 +98,6 @@ namespace HazeAPI.Services
             return city;
         }
 
-        internal async Task<Haze> HazeDetailsById(string hazeId, Haze haze)
-        {
-            string result = await httpClient.GetStringAsync(BASE_URL + hazeId);
-            return ProcessResultToHaze(result, haze);
-        }
-
         private Haze ProcessResultToHaze(string result, Haze haze)
         {
             HtmlDocument htmlDocument = new HtmlDocument();
@@ -146,6 +154,104 @@ namespace HazeAPI.Services
             }
 
             return haze;
+        }
+
+        private LinkedList<History> ProcessResultToHazeHistory(string result, LinkedList<History> historyList)
+        {
+            HtmlDocument htmlDocument = new HtmlDocument();
+            htmlDocument.OptionFixNestedTags = true;
+            htmlDocument.LoadHtml(result);
+            HtmlNode allNodes = htmlDocument.DocumentNode;
+
+            IEnumerable<HtmlNode> divNodes = (from node in allNodes.DescendantsAndSelf()
+                                              where node.Name.Equals("div")
+                                              select node);
+
+            foreach (HtmlNode divNode in divNodes)
+            {
+                if (divNode.HasAttributes && divNode.Attributes.Contains("class"))
+                {
+                    HtmlAttribute classAttribute = divNode.Attributes.AttributesWithName("class").First();
+                    if (divNode.Attributes.Count == 1 && classAttribute.Value.Equals("row"))
+                    {
+                        HtmlDocument divNodeHtml = new HtmlDocument();
+                        divNodeHtml.OptionFixNestedTags = true;
+                        divNodeHtml.LoadHtml(divNode.InnerHtml);
+                        HtmlNode parentRowDivNode = divNodeHtml.DocumentNode;
+
+                        IEnumerable<HtmlNode> rowDivNodes = (from node in parentRowDivNode.DescendantsAndSelf()
+                                                          where node.Name.Equals("div")
+                                                          select node);
+
+                        string dateTime = "";
+                        History history = new History();
+                        foreach (HtmlNode rowDivNode in rowDivNodes)
+                        {
+                            HtmlAttribute rowDivClassAttribute = rowDivNode.Attributes.AttributesWithName("class").First();
+                            switch (rowDivClassAttribute.Value)
+                            {
+                                case "psiold":
+                                    history.PSI = rowDivNode.InnerText;
+                                    HtmlAttribute styleAttribute = rowDivNode.Attributes.AttributesWithName("style").First();
+                                    string style = styleAttribute.Value;
+                                    history.Color = style.Substring(style.IndexOf(":") + 1, 7);
+                                    break;
+                                case "psiolddate":
+                                    if (String.IsNullOrEmpty(dateTime))
+                                    {
+                                        dateTime = rowDivNode.InnerText.Replace("at ", "");
+                                    }
+                                    else
+                                    {
+                                        HtmlAttribute emptyStyleAttribute = rowDivNode.Attributes.AttributesWithName("style").First();
+                                        if (emptyStyleAttribute.Value == "")
+                                        {
+                                            dateTime += rowDivNode.InnerText;
+                                            TimeSpan diff = DateTime.UtcNow.Add(new TimeSpan(8, 0, 0)) - DateTime.SpecifyKind(DateTime.Parse(dateTime), DateTimeKind.Utc);
+                                            if (diff.Days > 0)
+                                            {
+                                                history.TimeDiff = diff.Days + " day(s) ago";
+                                            }
+                                            else
+                                            {
+                                                history.TimeDiff = diff.Hours + " hour(s) ago";
+                                            }
+                                        }
+                                    }
+                                    break;
+                            }
+                        }
+                        historyList.AddLast(history);
+                    }
+                }
+            }
+
+            IEnumerator<History> historyEnumerator = historyList.GetEnumerator();
+            IEnumerator<History> historyToCompareEnumerator = historyList.GetEnumerator();
+            historyEnumerator.MoveNext();
+            historyToCompareEnumerator.MoveNext();
+            while (historyToCompareEnumerator.MoveNext())
+            {
+                History currentHistory = historyEnumerator.Current;
+                History currentHistoryToCompare = historyToCompareEnumerator.Current;
+                int psiDiff = Convert.ToInt32(currentHistoryToCompare.PSI) - Convert.ToInt32(currentHistory.PSI);
+                currentHistory.PSIDiff = psiDiff.ToString();
+                
+                if (psiDiff > 0)
+                {
+                    currentHistory.ColorDiff = "#66FF99";
+                    currentHistory.PSIDiff = psiDiff.ToString();
+                }
+                else if (psiDiff < 0)
+                {
+                    currentHistory.ColorDiff = "#CC0033";
+                    currentHistory.PSIDiff = Math.Abs(psiDiff).ToString();
+                }
+                
+                historyEnumerator.MoveNext();
+            }
+
+            return historyList;
         }
     }
 }
