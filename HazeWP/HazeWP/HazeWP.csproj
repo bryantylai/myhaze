@@ -97,7 +97,10 @@
     <Compile Include="DynamicTile.xaml.cs">
       <DependentUpon>DynamicTile.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Haze.cs" />
+    <Compile Include="Classes.cs" />
+    <Compile Include="HistoryControl.xaml.cs">
+      <DependentUpon>HistoryControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LiveUpdater.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -120,6 +123,10 @@
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
     <Page Include="DynamicTile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="HistoryControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

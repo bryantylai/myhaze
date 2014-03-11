@@ -38,6 +38,7 @@ namespace HazeWP
             {
                 LocationListPicker.SelectedItem = defaultLocation;
                 LoadingAnimation.Begin();
+                BindUI();
             }
             else 
             {
@@ -47,7 +48,47 @@ namespace HazeWP
 
         private void BindUI()
         {
+            HistoryStack.Children.Clear();
+            string locationId;
+            Location.locationCollection.TryGetValue(LocationListPicker.SelectedItem as string, out locationId);
+            RestClient restClient = new RestClient();
+            restClient.Get<Haze>("http://myhaze-api.azurewebsites.net/api/hazemy/haze/" + locationId, (result) =>
+            {
+                PSINowText.Text = result.PSI;
+                UpdateText.Text = result.TimeDiff;
+                byte[] bytes = StringToByteArray(result.Color);
+                PSINowEllipse.Fill = new SolidColorBrush(Color.FromArgb(255, bytes[0], bytes[1], bytes[2]));
 
+                restClient.Get<LinkedList<History>>("http://myhaze-api.azurewebsites.net/api/hazemy/haze/" + locationId + "/history", (innerResult) =>
+                {
+                    foreach (History history in innerResult)
+                    {
+                        HistoryControl historyControl = new HistoryControl();
+                        historyControl.PSI = history.PSI;
+                        historyControl.PSIDiff = history.PSIDiff;
+                        historyControl.Color = history.Color;
+                        historyControl.ColorDiff = history.ColorDiff;
+                        historyControl.TimeDiff = history.TimeDiff;
+
+                        HistoryStack.Children.Add(historyControl);
+                        HistoryStack.Children.Add(historyControl);
+                        LoadingAnimation.Stop();
+                        UnloadingAnimation.Stop();
+                        LoadingPanel.Visibility = Visibility.Collapsed;
+                    }
+                });
+            });
+        }
+
+        public static byte[] StringToByteArray(string hex)
+        {
+            int NumberChars = hex.Length;
+            byte[] bytes = new byte[NumberChars / 2];
+            for (int i = 0; i < NumberChars; i += 2)
+            {
+                bytes[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
+            }
+            return bytes;
         }
 
         #region Loading Animation

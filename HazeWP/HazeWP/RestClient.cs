@@ -17,7 +17,7 @@ namespace HazeWP
             client.DownloadStringAsync(new Uri(url, UriKind.Absolute));
             client.DownloadStringCompleted += (sender, eventArgs) =>
             {
-                bool internalServerErr = false;
+                //bool internalServerErr = false;
                 try
                 {
                     var deserializedObject = JsonConvert.DeserializeObject<T>(eventArgs.Result);
@@ -25,14 +25,14 @@ namespace HazeWP
                 }
                 catch (Exception)
                 {
-                    internalServerErr = true;
+                    //internalServerErr = true;
                     callback(default(T));
                 }
 
-                if (internalServerErr)
-                {
-                    MessageBox.Show("There has been an error while retrieving data. Please try again later.");
-                }
+                //if (internalServerErr)
+                //{
+                //    MessageBox.Show("There has been an error while retrieving data. Please try again later.");
+                //}
             };
         }
     }

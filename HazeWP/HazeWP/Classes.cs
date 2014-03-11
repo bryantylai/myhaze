@@ -15,6 +15,15 @@ namespace HazeWP
         public string Color { get; set; }
     }
 
+    public class History
+    {
+        public string PSI { get; set; }
+        public string PSIDiff { get; set; }
+        public string Color { get; set; }
+        public string ColorDiff { get; set; }
+        public string TimeDiff { get; set; }
+    }
+
     public class Location
     {
         public static Dictionary<string, string> locationCollection = new Dictionary<string, string>()
