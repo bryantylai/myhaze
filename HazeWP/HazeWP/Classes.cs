@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 
 namespace HazeWP
 {
+    public class HazeWithHistory
+    {
+        public Haze Haze { get; set; }
+        public LinkedList<History> Histories { get; set; }
+    }
+
     public class Haze
     {
         public string ID { get; set; }
