@@ -37,7 +37,6 @@ namespace HazeWP
             if (isNotFirstLaunch)
             {
                 LocationListPicker.SelectedItem = defaultLocation;
-                LoadingAnimation.Begin();
                 BindUI();
             }
             else 
@@ -48,6 +47,9 @@ namespace HazeWP
 
         private void BindUI()
         {
+            LoadingPanel.Visibility = Visibility.Visible;
+            HistoryGridView.Visibility = Visibility.Collapsed;
+            LoadingAnimation.Begin();
             HistoryStack.Children.Clear();
             string locationId;
             Location.locationCollection.TryGetValue(LocationListPicker.SelectedItem as string, out locationId);
@@ -56,11 +58,17 @@ namespace HazeWP
             {
                 if (result != null)
                 {
+                    LoadingAnimation.Stop();
+                    UnloadingAnimation.Stop();
+                    LoadingPanel.Visibility = Visibility.Collapsed;
+                    HistoryGridView.Visibility = Visibility.Visible;
+
                     PSINowText.Text = result.Haze.PSI;
                     UpdateText.Text = result.Haze.TimeDiff;
                     byte[] bytes = StringToByteArray(result.Haze.Color);
                     PSINowEllipse.Fill = new SolidColorBrush(Color.FromArgb(255, bytes[0], bytes[1], bytes[2]));
 
+                    LinkedList<HistoryControl> historyControlList = new LinkedList<HistoryControl>();
                     foreach (History history in result.Histories)
                     {
                         HistoryControl historyControl = new HistoryControl();
@@ -69,12 +77,13 @@ namespace HazeWP
                         historyControl.Color = history.Color;
                         historyControl.ColorDiff = history.ColorDiff;
                         historyControl.TimeDiff = history.TimeDiff;
+                        historyControlList.AddLast(historyControl);
+                    }
 
+                    foreach (HistoryControl historyControl in historyControlList)
+                    {
                         HistoryStack.Children.Add(historyControl);
                     }
-                    LoadingAnimation.Stop();
-                    UnloadingAnimation.Stop();
-                    LoadingPanel.Visibility = Visibility.Collapsed;
                 }
             });
         }

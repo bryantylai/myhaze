@@ -134,11 +134,7 @@ namespace HazeAPI.Services
                                     dateTime += divNode.InnerText;
                                     DateTime psiDateTime = DateTime.Parse(dateTime);
                                     int utcHour = DateTime.UtcNow.Hour + 8;
-                                    if (utcHour >= 24)
-                                    {
-                                        utcHour = utcHour - 24;
-                                    }
-                                    if (utcHour < 12)
+                                    if (utcHour < 24)
                                     {
                                         psiDateTime = new DateTime(psiDateTime.Year, psiDateTime.Month, psiDateTime.Day - 1, psiDateTime.Hour, psiDateTime.Minute, psiDateTime.Second);
                                     }
@@ -224,11 +220,7 @@ namespace HazeAPI.Services
                                         {
                                             dateTime += rowDivNode.InnerText; DateTime psiDateTime = DateTime.Parse(dateTime);
                                             int utcHour = DateTime.UtcNow.Hour + 8;
-                                            if (utcHour >= 24)
-                                            {
-                                                utcHour = utcHour - 24;
-                                            }
-                                            if (utcHour < 12)
+                                            if (utcHour < 24)
                                             {
                                                 psiDateTime = new DateTime(psiDateTime.Year, psiDateTime.Month, psiDateTime.Day - 1, psiDateTime.Hour, psiDateTime.Minute, psiDateTime.Second);
                                             }
