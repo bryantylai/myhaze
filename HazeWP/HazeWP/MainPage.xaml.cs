@@ -52,24 +52,26 @@ namespace HazeWP
             string locationId;
             Location.locationCollection.TryGetValue(LocationListPicker.SelectedItem as string, out locationId);
             RestClient restClient = new RestClient();
-            restClient.Get<HazeWithHistory>("http://myhaze-api.azurewebsites.net/api/hazemy/haze/history" + locationId, (result) =>
+            restClient.Get<HazeWithHistory>("http://myhaze-api.azurewebsites.net/api/hazemy/haze/history/" + locationId, (result) =>
             {
-                //PSINowText.Text = result.Haze.PSI;
-                //UpdateText.Text = result.Haze.TimeDiff;
-                //byte[] bytes = StringToByteArray(result.Haze.Color);
-                //PSINowEllipse.Fill = new SolidColorBrush(Color.FromArgb(255, bytes[0], bytes[1], bytes[2]));
-
-                foreach (History history in result.Histories)
+                if (result != null)
                 {
-                    HistoryControl historyControl = new HistoryControl();
-                    historyControl.PSI = history.PSI;
-                    historyControl.PSIDiff = history.PSIDiff;
-                    historyControl.Color = history.Color;
-                    historyControl.ColorDiff = history.ColorDiff;
-                    historyControl.TimeDiff = history.TimeDiff;
+                    PSINowText.Text = result.Haze.PSI;
+                    UpdateText.Text = result.Haze.TimeDiff;
+                    byte[] bytes = StringToByteArray(result.Haze.Color);
+                    PSINowEllipse.Fill = new SolidColorBrush(Color.FromArgb(255, bytes[0], bytes[1], bytes[2]));
 
-                    HistoryStack.Children.Add(historyControl);
-                    HistoryStack.Children.Add(historyControl);
+                    foreach (History history in result.Histories)
+                    {
+                        HistoryControl historyControl = new HistoryControl();
+                        historyControl.PSI = history.PSI;
+                        historyControl.PSIDiff = history.PSIDiff;
+                        historyControl.Color = history.Color;
+                        historyControl.ColorDiff = history.ColorDiff;
+                        historyControl.TimeDiff = history.TimeDiff;
+
+                        HistoryStack.Children.Add(historyControl);
+                    }
                     LoadingAnimation.Stop();
                     UnloadingAnimation.Stop();
                     LoadingPanel.Visibility = Visibility.Collapsed;
@@ -79,11 +81,11 @@ namespace HazeWP
 
         public static byte[] StringToByteArray(string hex)
         {
-            int NumberChars = hex.Length;
-            byte[] bytes = new byte[NumberChars / 2];
-            for (int i = 0; i < NumberChars; i += 2)
+            byte[] bytes = new byte[3];
+            int index = 0;
+            for (int i = 1; i <= 5; i += 2)
             {
-                bytes[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
+                bytes[index++] = Convert.ToByte(hex.Substring(i, 2), 16);
             }
             return bytes;
         }

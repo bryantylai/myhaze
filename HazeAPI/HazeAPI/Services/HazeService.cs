@@ -138,12 +138,16 @@ namespace HazeAPI.Services
                                     {
                                         utcHour = utcHour - 24;
                                     }
-                                    if (utcHour < 12 && psiDateTime.Hour > 12)
+                                    if (utcHour < 12)
                                     {
                                         psiDateTime = new DateTime(psiDateTime.Year, psiDateTime.Month, psiDateTime.Day - 1, psiDateTime.Hour, psiDateTime.Minute, psiDateTime.Second);
                                     }
                                     TimeSpan diff = DateTime.UtcNow.Add(new TimeSpan(8, 0, 0)) - DateTime.SpecifyKind(psiDateTime, DateTimeKind.Utc);
-                                    if (diff.Hours < 1)
+                                    if (diff.Days > 0)
+                                    {
+                                        haze.TimeDiff = diff.Days + " day(s) ago";
+                                    }
+                                    else if (diff.Hours < 1)
                                     {
                                         haze.TimeDiff = diff.Minutes + " minute(s) ago";
                                     }
@@ -218,11 +222,24 @@ namespace HazeAPI.Services
                                         HtmlAttribute emptyStyleAttribute = rowDivNode.Attributes.AttributesWithName("style").First();
                                         if (emptyStyleAttribute.Value == "")
                                         {
-                                            dateTime += rowDivNode.InnerText;
-                                            TimeSpan diff = DateTime.UtcNow.Add(new TimeSpan(8, 0, 0)) - DateTime.SpecifyKind(DateTime.Parse(dateTime), DateTimeKind.Utc);
+                                            dateTime += rowDivNode.InnerText; DateTime psiDateTime = DateTime.Parse(dateTime);
+                                            int utcHour = DateTime.UtcNow.Hour + 8;
+                                            if (utcHour >= 24)
+                                            {
+                                                utcHour = utcHour - 24;
+                                            }
+                                            if (utcHour < 12)
+                                            {
+                                                psiDateTime = new DateTime(psiDateTime.Year, psiDateTime.Month, psiDateTime.Day - 1, psiDateTime.Hour, psiDateTime.Minute, psiDateTime.Second);
+                                            }
+                                            TimeSpan diff = DateTime.UtcNow.Add(new TimeSpan(8, 0, 0)) - DateTime.SpecifyKind(psiDateTime, DateTimeKind.Utc);
                                             if (diff.Days > 0)
                                             {
                                                 history.TimeDiff = diff.Days + " day(s) ago";
+                                            } 
+                                            else if (diff.Hours < 1)
+                                            {
+                                                history.TimeDiff = diff.Minutes + " minute(s) ago";
                                             }
                                             else
                                             {
@@ -247,7 +264,6 @@ namespace HazeAPI.Services
                 History currentHistory = historyEnumerator.Current;
                 History currentHistoryToCompare = historyToCompareEnumerator.Current;
                 int psiDiff = Convert.ToInt32(currentHistoryToCompare.PSI) - Convert.ToInt32(currentHistory.PSI);
-                currentHistory.PSIDiff = psiDiff.ToString();
                 
                 if (psiDiff > 0)
                 {
