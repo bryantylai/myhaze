@@ -132,7 +132,17 @@ namespace HazeAPI.Services
                                 if (emptyStyleAttribute.Value == "")
                                 {
                                     dateTime += divNode.InnerText;
-                                    TimeSpan diff = DateTime.UtcNow.Add(new TimeSpan(8, 0, 0)) - DateTime.SpecifyKind(DateTime.Parse(dateTime), DateTimeKind.Utc);
+                                    DateTime psiDateTime = DateTime.Parse(dateTime);
+                                    int utcHour = DateTime.UtcNow.Hour + 8;
+                                    if (utcHour >= 24)
+                                    {
+                                        utcHour = utcHour - 24;
+                                    }
+                                    if (utcHour < 12 && psiDateTime.Hour > 12)
+                                    {
+                                        psiDateTime = new DateTime(psiDateTime.Year, psiDateTime.Month, psiDateTime.Day - 1, psiDateTime.Hour, psiDateTime.Minute, psiDateTime.Second);
+                                    }
+                                    TimeSpan diff = DateTime.UtcNow.Add(new TimeSpan(8, 0, 0)) - DateTime.SpecifyKind(psiDateTime, DateTimeKind.Utc);
                                     if (diff.Hours < 1)
                                     {
                                         haze.TimeDiff = diff.Minutes + " minute(s) ago";
