@@ -18,37 +18,37 @@
     <Grid x:Name="LayoutRoot" Background="#FFDADADA">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Height="90" Width="480" HorizontalAlignment="Center" Background="Beige">
+        <!--<Grid Grid.Row="0" Height="90" Width="480" HorizontalAlignment="Center" Background="Beige">
 
-        </Grid>
+        </Grid>-->
 
         <TextBlock x:Name="ApplicationTitle" Margin="12,5" Grid.Row="1" HorizontalAlignment="Right" Text="Haze MY" Foreground="Black" FontWeight="ExtraBlack" FontSize="32" FontFamily="/HazeWP;component/Fonts/Fonts.zip#Andy"/>
 
         <!--ContentPanel - place additional content here-->
-        <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <toolkit:ListPicker x:Name="LocationListPicker" Background="Transparent" BorderBrush="Transparent">
-                <toolkit:ListPicker.Header>
-                    <TextBlock Text="Location" Foreground="Black" FontSize="{StaticResource PhoneFontSizeMediumLarge}" FontWeight="SemiBold" />
-                </toolkit:ListPicker.Header>
-                <toolkit:ListPicker.FullModeHeader>
-                    Location
-                </toolkit:ListPicker.FullModeHeader>
-                <toolkit:ListPicker.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding}" Foreground="Black" HorizontalAlignment="Center" FontFamily="/HazeWP;component/Fonts/Fonts.zip#Segoe Print" FontWeight="Bold" FontSize="{StaticResource PhoneFontSizeNormal}"/>
-                    </DataTemplate>
-                </toolkit:ListPicker.ItemTemplate>
-                <toolkit:ListPicker.FullModeItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding}" Foreground="{StaticResource PhoneContrastBackgroundBrush}" FontSize="28" Margin="0,10" />
-                    </DataTemplate>
-                </toolkit:ListPicker.FullModeItemTemplate>
-            </toolkit:ListPicker>
-            <!--<StackPanel>
+        <Grid Grid.Row="1" Margin="12,50,12,0">
+            <StackPanel x:Name="ContentPanel">
+                <toolkit:ListPicker x:Name="LocationListPicker" Background="Transparent" BorderBrush="Transparent">
+                    <toolkit:ListPicker.Header>
+                        <TextBlock Text="Location" Foreground="Black" FontSize="{StaticResource PhoneFontSizeMediumLarge}" FontWeight="SemiBold" />
+                    </toolkit:ListPicker.Header>
+                    <toolkit:ListPicker.FullModeHeader>
+                        Location
+                    </toolkit:ListPicker.FullModeHeader>
+                    <toolkit:ListPicker.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" Foreground="Black" HorizontalAlignment="Center" FontFamily="/HazeWP;component/Fonts/Fonts.zip#Segoe Print" FontWeight="Bold" FontSize="{StaticResource PhoneFontSizeNormal}"/>
+                        </DataTemplate>
+                    </toolkit:ListPicker.ItemTemplate>
+                    <toolkit:ListPicker.FullModeItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" Foreground="{StaticResource PhoneContrastBackgroundBrush}" FontSize="28" Margin="0,10" />
+                        </DataTemplate>
+                    </toolkit:ListPicker.FullModeItemTemplate>
+                </toolkit:ListPicker>
+                <!--<StackPanel>
                 <toolkit:ToggleSwitch x:Name="PushNotificationToggleSwitch" Foreground="Black" Checked="PushNotificationToggleSwitch_Checked" Unchecked="PushNotificationToggleSwitch_Unchecked">
                     <toolkit:ToggleSwitch.Header>
                         <TextBlock Text="Push Notification" Foreground="Black" FontSize="{StaticResource PhoneFontSizeMediumLarge}" FontWeight="SemiBold" />
@@ -65,9 +65,10 @@
                     </toolkit:TimePicker.Header>
                 </toolkit:TimePicker>
             </StackPanel>-->
-            <Button x:Name="ReviewButton" Content="Review" BorderBrush="Black" Foreground="Black" Click="ReviewButton_Click" />
-            <Button x:Name="EmailDevButton" Content="Email Developer" BorderBrush="Black" Foreground="Black" Click="EmailDevButton_Click" />
-        </StackPanel>
+                <Button x:Name="ReviewButton" Margin="0,25,0,0" Content="Review" BorderBrush="Black" Foreground="Black" Click="ReviewButton_Click" />
+                <Button x:Name="EmailDevButton" Margin="0,25,0,25" Content="Email Developer" BorderBrush="Black" Foreground="Black" Click="EmailDevButton_Click" />
+            </StackPanel>
+        </Grid>
     </Grid>
 
 </phone:PhoneApplicationPage>

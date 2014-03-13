@@ -121,7 +121,7 @@ namespace HazeWP
         private void ShareButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             ShareStatusTask task = new ShareStatusTask();
-            task.Status = "Current API at " + (String)LocationListPicker.SelectedItem + " is " + PSINowText.Text + ". Updated at " + UpdateText.Text + " via MY Haze #haze #myhaze http://aka.ms/hazemy";
+            task.Status = "Current API at " + (String)LocationListPicker.SelectedItem + " is " + PSINowText.Text + " via Haze MY #haze #myhaze http://aka.ms/hazemy";
             task.Show();
         }
 

@@ -1,11 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
   <DefaultLanguage xmlns="" code="en-US" />
-  <App xmlns="" ProductID="{985c8e8f-95cd-444f-a35b-d66d6e5f1ff8}" Title="Haze MY" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="HazeWP author" Description="Sample description" Publisher="HazeWP" PublisherID="{093e0403-7e01-460e-b81b-d5969c87a78e}">
+  <App xmlns="" ProductID="{985c8e8f-95cd-444f-a35b-d66d6e5f1ff8}" Title="Haze MY" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="HazeWP author" Description="" Publisher="HazeWP" PublisherID="{093e0403-7e01-460e-b81b-d5969c87a78e}">
     <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
-      <Capability Name="ID_CAP_PUSH_NOTIFICATION" />
     </Capabilities>
     <Tasks>
       <DefaultTask Name="_default" NavigationPage="MainPage.xaml" />
@@ -16,7 +15,8 @@
           <SmallImageURI IsRelative="true" IsResource="false">Assets\Tiles\FlipCycleTileSmall.png</SmallImageURI>
           <Count>0</Count>
           <BackgroundImageURI IsRelative="true" IsResource="false">Assets\Tiles\FlipCycleTileMedium.png</BackgroundImageURI>
-          <Title>HazeWP</Title>
+          <Title>
+          </Title>
           <BackContent>
           </BackContent>
           <BackBackgroundImageURI>
