@@ -23,7 +23,7 @@ namespace HazeWP
             InitializeComponent();
 
             this.isolatedStorageSettings = IsolatedStorageSettings.ApplicationSettings;
-            this.SetPushNotificationTimePickers();
+            //this.SetPushNotificationTimePickers();
             this.LocationListPicker.ItemsSource = Location.locationCollection.Keys;
             this.LocationListPicker.SelectionChanged += LocationListPicker_SelectionChanged;
         }
@@ -47,12 +47,12 @@ namespace HazeWP
                 this.ContentPanel.Children.Add(button);
             }
 
-            bool isPushNotificationChecked;
-            if (this.isolatedStorageSettings.TryGetValue<bool>("PushNotification", out isPushNotificationChecked))
-            {
-                this.PushNotificationToggleSwitch.IsChecked = isPushNotificationChecked;
-                this.SetPushNotificationTimePickers();
-            }
+            //bool isPushNotificationChecked;
+            //if (this.isolatedStorageSettings.TryGetValue<bool>("PushNotification", out isPushNotificationChecked))
+            //{
+            //    this.PushNotificationToggleSwitch.IsChecked = isPushNotificationChecked;
+            //    this.SetPushNotificationTimePickers();
+            //}
         }
 
         void button_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -90,62 +90,62 @@ namespace HazeWP
             task.Show();
         }
 
-        private void PushNotificationToggleSwitch_Checked(object sender, RoutedEventArgs e)
-        {
-            this.isolatedStorageSettings.Remove("PushNotification");
-            this.isolatedStorageSettings.Add("PushNotification", PushNotificationToggleSwitch.IsChecked);
-            this.isolatedStorageSettings.Save();
-            this.SetPushNotificationTimePickers();
-        }
+        //private void PushNotificationToggleSwitch_Checked(object sender, RoutedEventArgs e)
+        //{
+        //    this.isolatedStorageSettings.Remove("PushNotification");
+        //    this.isolatedStorageSettings.Add("PushNotification", PushNotificationToggleSwitch.IsChecked);
+        //    this.isolatedStorageSettings.Save();
+        //    this.SetPushNotificationTimePickers();
+        //}
 
-        private void PushNotificationToggleSwitch_Unchecked(object sender, RoutedEventArgs e)
-        {
-            this.isolatedStorageSettings.Remove("PushNotification");
-            this.isolatedStorageSettings.Add("PushNotification", PushNotificationToggleSwitch.IsChecked);
-            this.isolatedStorageSettings.Save();
-            this.SetPushNotificationTimePickers();
-        }
+        //private void PushNotificationToggleSwitch_Unchecked(object sender, RoutedEventArgs e)
+        //{
+        //    this.isolatedStorageSettings.Remove("PushNotification");
+        //    this.isolatedStorageSettings.Add("PushNotification", PushNotificationToggleSwitch.IsChecked);
+        //    this.isolatedStorageSettings.Save();
+        //    this.SetPushNotificationTimePickers();
+        //}
 
-        #region Time Range for Push Notification
+        //#region Time Range for Push Notification
 
-        private void SetPushNotificationTimePickers()
-        {
-            if ((bool) PushNotificationToggleSwitch.IsChecked)
-            {
-                this.StartTimePicker.Visibility = Visibility.Visible;
-                this.EndTimePicker.Visibility = Visibility.Visible;
+        //private void SetPushNotificationTimePickers()
+        //{
+        //    if ((bool) PushNotificationToggleSwitch.IsChecked)
+        //    {
+        //        this.StartTimePicker.Visibility = Visibility.Visible;
+        //        this.EndTimePicker.Visibility = Visibility.Visible;
                 
-                DateTime startTime;
-                if (this.isolatedStorageSettings.TryGetValue<DateTime>("PushNotificationStartTime", out startTime))
-                {
-                    this.StartTimePicker.Value = startTime;
-                }
+        //        DateTime startTime;
+        //        if (this.isolatedStorageSettings.TryGetValue<DateTime>("PushNotificationStartTime", out startTime))
+        //        {
+        //            this.StartTimePicker.Value = startTime;
+        //        }
                 
-                DateTime endTime;
-                if (this.isolatedStorageSettings.TryGetValue<DateTime>("PushNotificationEndTime", out endTime))
-                {
-                    this.EndTimePicker.Value = endTime;
-                }
-            }
-            else
-            {
-                this.StartTimePicker.Visibility = Visibility.Collapsed;
-                this.EndTimePicker.Visibility = Visibility.Collapsed;
-            }
-        }
+        //        DateTime endTime;
+        //        if (this.isolatedStorageSettings.TryGetValue<DateTime>("PushNotificationEndTime", out endTime))
+        //        {
+        //            this.EndTimePicker.Value = endTime;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        this.StartTimePicker.Visibility = Visibility.Collapsed;
+        //        this.EndTimePicker.Visibility = Visibility.Collapsed;
+        //    }
+        //}
 
-        #endregion
+        //#endregion
 
-        private void StartTimePicker_ValueChanged(object sender, DateTimeValueChangedEventArgs e)
-        {
-            this.isolatedStorageSettings.Remove("PushNotificationStartTime");
-            this.isolatedStorageSettings.Add("PushNotificationStartTime", StartTimePicker.Value);
-        }
+        //private void StartTimePicker_ValueChanged(object sender, DateTimeValueChangedEventArgs e)
+        //{
+        //    this.isolatedStorageSettings.Remove("PushNotificationStartTime");
+        //    this.isolatedStorageSettings.Add("PushNotificationStartTime", StartTimePicker.Value);
+        //}
 
-        private void EndTimePicker_ValueChanged(object sender, DateTimeValueChangedEventArgs e)
-        {
-            this.isolatedStorageSettings.Remove("PushNotificationEndTime");
-            this.isolatedStorageSettings.Add("PushNotificationEndTime", EndTimePicker.Value);
-        }
+        //private void EndTimePicker_ValueChanged(object sender, DateTimeValueChangedEventArgs e)
+        //{
+        //    this.isolatedStorageSettings.Remove("PushNotificationEndTime");
+        //    this.isolatedStorageSettings.Add("PushNotificationEndTime", EndTimePicker.Value);
+        //}
     }
 }

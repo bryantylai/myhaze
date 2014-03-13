@@ -64,7 +64,7 @@ namespace HazeWP
                     HistoryGridView.Visibility = Visibility.Visible;
 
                     PSINowText.Text = result.Haze.PSI;
-                    UpdateText.Text = result.Haze.TimeDiff;
+                    //UpdateText.Text = result.Haze.TimeDiff;
                     byte[] bytes = StringToByteArray(result.Haze.Color);
                     PSINowEllipse.Fill = new SolidColorBrush(Color.FromArgb(255, bytes[0], bytes[1], bytes[2]));
 

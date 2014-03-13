@@ -48,7 +48,7 @@
                     </DataTemplate>
                 </toolkit:ListPicker.FullModeItemTemplate>
             </toolkit:ListPicker>
-            <StackPanel>
+            <!--<StackPanel>
                 <toolkit:ToggleSwitch x:Name="PushNotificationToggleSwitch" Foreground="Black" Checked="PushNotificationToggleSwitch_Checked" Unchecked="PushNotificationToggleSwitch_Unchecked">
                     <toolkit:ToggleSwitch.Header>
                         <TextBlock Text="Push Notification" Foreground="Black" FontSize="{StaticResource PhoneFontSizeMediumLarge}" FontWeight="SemiBold" />
@@ -64,7 +64,7 @@
                         <TextBlock Text="Disabled At" Foreground="Black" FontSize="{StaticResource PhoneFontSizeMediumLarge}" FontWeight="SemiBold" />
                     </toolkit:TimePicker.Header>
                 </toolkit:TimePicker>
-            </StackPanel>
+            </StackPanel>-->
             <Button x:Name="ReviewButton" Content="Review" BorderBrush="Black" Foreground="Black" Click="ReviewButton_Click" />
             <Button x:Name="EmailDevButton" Content="Email Developer" BorderBrush="Black" Foreground="Black" Click="EmailDevButton_Click" />
         </StackPanel>

@@ -15,7 +15,7 @@
                 <Ellipse Fill="{Binding Color}" />
                 <TextBlock Text="{Binding PSI}" Foreground="Black" FontSize="{StaticResource PhoneFontSizeExtraLarge}" HorizontalAlignment="Center" VerticalAlignment="Center" />
             </Grid>
-            <TextBlock Text="{Binding TimeDiff}" Foreground="Black" HorizontalAlignment="Center" />
+            <!--<TextBlock Text="{Binding TimeDiff}" Foreground="Black" HorizontalAlignment="Center" />-->
         </StackPanel>
         <Grid Width="45" Height="45" HorizontalAlignment="Right" VerticalAlignment="Top">
             <Ellipse Fill="{Binding ColorDiff}" />
