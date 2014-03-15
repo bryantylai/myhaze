@@ -32,6 +32,8 @@ namespace HazeWP
         {
             base.OnNavigatedTo(e);
 
+            ResetAdvertisement();
+
             string location;
             if (this.isolatedStorageSettings.TryGetValue<string>("Location", out location))
             {
@@ -53,6 +55,21 @@ namespace HazeWP
             //    this.PushNotificationToggleSwitch.IsChecked = isPushNotificationChecked;
             //    this.SetPushNotificationTimePickers();
             //}
+        }
+
+        private void ResetAdvertisement()
+        {
+            //this.AdControl.ApplicationId = "76650526-a875-4c65-a502-887e5aa0d5b6";
+            //this.AdControl.AdUnitId = "166265";
+            this.AdControl.ApplicationId = "test_client";
+            this.AdControl.AdUnitId = "Image480_80";
+            this.AdControl.IsAutoRefreshEnabled = true;
+            this.AdControl.ErrorOccurred += AdControl_ErrorOccurred;
+        }
+
+        private void AdControl_ErrorOccurred(object sender, Microsoft.Advertising.AdErrorEventArgs e)
+        {
+
         }
 
         void button_Tap(object sender, System.Windows.Input.GestureEventArgs e)

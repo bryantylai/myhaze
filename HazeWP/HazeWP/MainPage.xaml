@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:ad="clr-namespace:Microsoft.Advertising.Mobile.UI;assembly=Microsoft.Advertising.Mobile.UI"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -30,10 +31,10 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
-        <!--<Grid Grid.Row="0" Height="90" Width="480" HorizontalAlignment="Center" Background="Beige">
-            
-        </Grid>-->
+
+        <Grid x:Name="AdvertisementGrid" Grid.Row="0" HorizontalAlignment="Center" Background="#FFDADADA">
+            <ad:AdControl x:Name="AdControl" Width="480" Height="80" />
+        </Grid>
         
         <TextBlock x:Name="ApplicationTitle" Margin="12,5" Grid.Row="1" HorizontalAlignment="Right" Text="Haze MY" Foreground="Black" FontWeight="ExtraBlack" FontSize="32" FontFamily="/HazeWP;component/Fonts/Fonts.zip#Andy"/>
 

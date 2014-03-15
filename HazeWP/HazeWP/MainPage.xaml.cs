@@ -11,6 +11,7 @@ using Microsoft.Phone.Tasks;
 using HazeWP.Resources;
 using System.IO.IsolatedStorage;
 using System.Windows.Media;
+using Microsoft.Advertising.Mobile.UI;
 
 namespace HazeWP
 {
@@ -38,11 +39,27 @@ namespace HazeWP
             {
                 LocationListPicker.SelectedItem = defaultLocation;
                 BindUI();
+                ResetAdvertisement();
             }
             else 
             {
                 this.NavigationService.Navigate(new Uri("/SettingsPage.xaml", UriKind.Relative));
             }
+        }
+
+        private void ResetAdvertisement()
+        {
+            //this.AdControl.ApplicationId = "76650526-a875-4c65-a502-887e5aa0d5b6";
+            //this.AdControl.AdUnitId = "166265";
+            this.AdControl.ApplicationId = "test_client";
+            this.AdControl.AdUnitId = "Image480_80";
+            this.AdControl.IsAutoRefreshEnabled = true;
+            this.AdControl.ErrorOccurred += AdControl_ErrorOccurred;
+        }
+
+        private void AdControl_ErrorOccurred(object sender, Microsoft.Advertising.AdErrorEventArgs e)
+        {
+
         }
 
         private void BindUI()
@@ -64,7 +81,7 @@ namespace HazeWP
                     HistoryGridView.Visibility = Visibility.Visible;
 
                     PSINowText.Text = result.Haze.PSI;
-                    //UpdateText.Text = result.Haze.TimeDiff;
+                    UpdateText.Text = result.Haze.TimeDiff;
                     byte[] bytes = StringToByteArray(result.Haze.Color);
                     PSINowEllipse.Fill = new SolidColorBrush(Color.FromArgb(255, bytes[0], bytes[1], bytes[2]));
 
@@ -121,7 +138,7 @@ namespace HazeWP
         private void ShareButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             ShareStatusTask task = new ShareStatusTask();
-            task.Status = "Current API at " + (String)LocationListPicker.SelectedItem + " is " + PSINowText.Text + " via Haze MY #haze #myhaze http://aka.ms/hazemy";
+            task.Status = "Current API at " + (String)LocationListPicker.SelectedItem + " is " + PSINowText.Text + ". Updated at " + UpdateText.Text + " via Haze MY #haze #myhaze http://aka.ms/hazemy";
             task.Show();
         }
 
