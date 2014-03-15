@@ -18,7 +18,7 @@
     </Page.Resources>
 
     <Page.BottomAppBar>
-        <AppBar>
+        <AppBar x:Name="BottomApplicationBar">
             <StackPanel>
                 <AppBarButton x:Name="RefreshAppBarButton" HorizontalAlignment="Right" Icon="Refresh" Label="refresh" Tapped="RefreshAppBarButton_Tapped"/>
             </StackPanel>
@@ -54,12 +54,8 @@
                             VerticalAlignment="Top" Tapped="backButton_Tapped"/>
             <TextBlock x:Name="pageTitle" Text="{StaticResource AppName}" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                             IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40" Foreground="Black" FontFamily="Segoe Print"/>
-            <Grid Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,50,0">
-                <ad:AdRotatorControl x:Name="Win8AdRotator"
-                                     Height="90" Width="728"
-                                     AdHeight="90" AdWidth="728"
-                                     LocalSettingsLocation="defaultAdSettings.xml"
-                                     AutoStartAds="True"/>
+            <Grid x:Name="AdvertisementGrid" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,50,0">
+                
             </Grid>
         </Grid>
 

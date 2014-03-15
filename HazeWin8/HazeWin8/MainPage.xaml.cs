@@ -17,6 +17,7 @@ using System.Collections.ObjectModel;
 using Windows.UI.Popups;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.ApplicationSettings;
+using AdRotator;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 
@@ -55,7 +56,7 @@ namespace HazeWin8
         {
             this.InitializeComponent();
 
-            Win8AdRotator.PlatformAdProviderComponents.Add(AdRotator.Model.AdType.PubCenter, typeof(Microsoft.Advertising.WinRT.UI.AdControl));
+            this.ResetAdvertisement();
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += navigationHelper_LoadState;
@@ -265,6 +266,7 @@ namespace HazeWin8
 
         private void HazeSemanticZoom_ViewChangeStarted(object sender, SemanticZoomViewChangedEventArgs e)
         {
+            this.ResetAdvertisement();
             if (e.IsSourceZoomedInView == false)
             {
                 HazeZoomedInGridView.SelectedItem = HazeZoomedOutGridView.SelectedItem = e.DestinationItem.Item = e.SourceItem.Item;
@@ -275,6 +277,18 @@ namespace HazeWin8
                 HazeZoomedInGridView.SelectedItem = HazeZoomedOutGridView.SelectedItem = e.DestinationItem.Item = e.SourceItem.Item = null;
                 backButton.Visibility = Visibility.Collapsed;
             }
+        }
+
+        private void ResetAdvertisement()
+        {
+            AdvertisementGrid.Children.Clear();
+            AdRotatorControl adRotator = new AdRotatorControl();
+            adRotator.AdHeight = 90; adRotator.Height = 90;
+            adRotator.AdWidth = 728; adRotator.Width = 728;
+            adRotator.LocalSettingsLocation = "defaultAdSettings.xml";
+            adRotator.AutoStartAds = true;
+            adRotator.PlatformAdProviderComponents.Add(AdRotator.Model.AdType.PubCenter, typeof(Microsoft.Advertising.WinRT.UI.AdControl));
+            AdvertisementGrid.Children.Add(adRotator);
         }
 
         private void HazeZoomedInGridView_ItemClick(object sender, ItemClickEventArgs e)
@@ -313,7 +327,8 @@ namespace HazeWin8
 
         private void RefreshAppBarButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            BindUI();
+            UpdateCities();
+            BottomApplicationBar.IsOpen = false;
         }
     }
 }
