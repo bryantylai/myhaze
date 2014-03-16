@@ -38,7 +38,7 @@
             <TextBlock TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}" HorizontalAlignment="Left">
                             	<Run Text="This application was created to deal with the haze problem occurring in Malaysia, and if you encounter any problem while using the app, feel free to drop me an email at "/>
             </TextBlock>
-            <HyperlinkButton Padding="-5,0,0,0" Margin="0,0,0,0" Content="bryanlai@mystudentpartners.com" HorizontalAlignment="Left" Click="HyperlinkButton_Click"/>
+            <HyperlinkButton Padding="-5,0,0,0" Margin="0,0,0,0" Content="blty_2312@hotmail.my" HorizontalAlignment="Left" Click="HyperlinkButton_Click"/>
         </StackPanel>
     </StackPanel>
 </SettingsFlyout>

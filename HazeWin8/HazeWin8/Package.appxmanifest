@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
-  <Identity Name="46679bryantylai.HazeMY" Publisher="CN=7E5D9C95-324C-4146-8930-4F2D9EEED635" Version="1.1.0.3" />
+  <Identity Name="46679bryantylai.HazeMY" Publisher="CN=7E5D9C95-324C-4146-8930-4F2D9EEED635" Version="1.1.0.4" />
   <Properties>
     <DisplayName>Haze MY</DisplayName>
     <PublisherDisplayName>bryantylai</PublisherDisplayName>
