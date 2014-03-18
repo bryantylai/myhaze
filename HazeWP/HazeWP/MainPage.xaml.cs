@@ -39,27 +39,11 @@ namespace HazeWP
             {
                 LocationListPicker.SelectedItem = defaultLocation;
                 BindUI();
-                ResetAdvertisement();
             }
             else 
             {
                 this.NavigationService.Navigate(new Uri("/SettingsPage.xaml", UriKind.Relative));
             }
-        }
-
-        private void ResetAdvertisement()
-        {
-            //this.AdControl.ApplicationId = "76650526-a875-4c65-a502-887e5aa0d5b6";
-            //this.AdControl.AdUnitId = "166265";
-            this.AdControl.ApplicationId = "test_client";
-            this.AdControl.AdUnitId = "Image480_80";
-            this.AdControl.IsAutoRefreshEnabled = true;
-            this.AdControl.ErrorOccurred += AdControl_ErrorOccurred;
-        }
-
-        private void AdControl_ErrorOccurred(object sender, Microsoft.Advertising.AdErrorEventArgs e)
-        {
-
         }
 
         private void BindUI()

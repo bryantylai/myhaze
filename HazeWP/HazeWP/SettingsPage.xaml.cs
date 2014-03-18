@@ -17,6 +17,7 @@ namespace HazeWP
     {
         private IsolatedStorageSettings isolatedStorageSettings;
         private bool isSelectionMade = false;
+        private bool locationPrevSelected = false;
 
         public SettingsPage()
         {
@@ -32,10 +33,9 @@ namespace HazeWP
         {
             base.OnNavigatedTo(e);
 
-            ResetAdvertisement();
-
             string location;
-            if (this.isolatedStorageSettings.TryGetValue<string>("Location", out location))
+            locationPrevSelected = this.isolatedStorageSettings.TryGetValue<string>("Location", out location);
+            if (locationPrevSelected)
             {
                 LocationListPicker.SelectedItem = location;
             }
@@ -57,23 +57,26 @@ namespace HazeWP
             //}
         }
 
-        private void ResetAdvertisement()
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
         {
-            //this.AdControl.ApplicationId = "76650526-a875-4c65-a502-887e5aa0d5b6";
-            //this.AdControl.AdUnitId = "166265";
-            this.AdControl.ApplicationId = "test_client";
-            this.AdControl.AdUnitId = "Image480_80";
-            this.AdControl.IsAutoRefreshEnabled = true;
-            this.AdControl.ErrorOccurred += AdControl_ErrorOccurred;
-        }
+            base.OnBackKeyPress(e);
 
-        private void AdControl_ErrorOccurred(object sender, Microsoft.Advertising.AdErrorEventArgs e)
-        {
-
+            if (!locationPrevSelected)
+            {
+                App.Current.Terminate();
+            }
         }
 
         void button_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            if (LocationListPicker.SelectedItem != null)
+            {
+                string location = LocationListPicker.SelectedItem as string;
+                this.isolatedStorageSettings.Remove("Location");
+                this.isolatedStorageSettings.Add("Location", location);
+                this.isolatedStorageSettings.Save();
+            }
+
             this.NavigationService.GoBack();
         }
 
