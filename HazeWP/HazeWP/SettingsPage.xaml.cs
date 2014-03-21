@@ -18,6 +18,7 @@ namespace HazeWP
         private IsolatedStorageSettings isolatedStorageSettings;
         private bool isSelectionMade = false;
         private bool locationPrevSelected = false;
+        private Button checkHazeButton;
 
         public SettingsPage()
         {
@@ -41,12 +42,15 @@ namespace HazeWP
             }
             else
             {
-                Button button = new Button();
-                button.Content = "Check Haze API";
-                button.BorderBrush = new SolidColorBrush(Colors.Black);
-                button.Foreground = new SolidColorBrush(Colors.Black);
-                button.Tap += button_Tap;
-                this.ContentPanel.Children.Add(button);
+                if (!this.ContentPanel.Children.Contains(checkHazeButton))
+                {
+                    checkHazeButton = new Button();
+                    checkHazeButton.Content = "Check Haze API";
+                    checkHazeButton.BorderBrush = new SolidColorBrush(Colors.Black);
+                    checkHazeButton.Foreground = new SolidColorBrush(Colors.Black);
+                    checkHazeButton.Tap += button_Tap;
+                    this.ContentPanel.Children.Add(checkHazeButton);
+                }
             }
 
             //bool isPushNotificationChecked;
@@ -108,6 +112,12 @@ namespace HazeWP
             task.Subject = "Regarding Haze MY for Windows Phone";
             task.To = "blty_2312@hotmail.my";
             task.Show();
+        }
+
+        private void AdControl_ErrorOccurred(object sender, Microsoft.Advertising.AdErrorEventArgs e)
+        {
+            AdControl.Visibility = Visibility.Collapsed;
+            AdDuplexAd.Visibility = Visibility.Visible;
         }
 
         //private void PushNotificationToggleSwitch_Checked(object sender, RoutedEventArgs e)

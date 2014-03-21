@@ -159,6 +159,10 @@ namespace HazeWP
             isSelectionMade = true;
         }
 
-        
+        private void AdControl_ErrorOccurred(object sender, Microsoft.Advertising.AdErrorEventArgs e)
+        {
+            AdControl.Visibility = Visibility.Collapsed;
+            AdDuplexAd.Visibility = Visibility.Visible;
+        }
     }
 }
