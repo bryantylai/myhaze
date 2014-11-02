@@ -145,6 +145,7 @@
     <Compile Include="Models\Haze.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\HazeService.cs" />
+    <Compile Include="Services\HazeServiceV2.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />

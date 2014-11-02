@@ -10,6 +10,7 @@ using HtmlAgilityPack;
 
 namespace HazeAPI.Services
 {
+    [Obsolete]
     public class HazeService
     {
         private HttpClient httpClient;
