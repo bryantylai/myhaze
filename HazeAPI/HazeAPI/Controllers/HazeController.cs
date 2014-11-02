@@ -14,10 +14,12 @@ namespace HazeAPI.Controllers
     public class HazeController : ApiController
     {
         private HazeService hazeService;
+        private HazeServiceV2 hazeServiceV2;
 
         public HazeController()
         {
             this.hazeService = new HazeService();
+            this.hazeServiceV2 = new HazeServiceV2();
         }
 
         /// <summary>
@@ -40,7 +42,8 @@ namespace HazeAPI.Controllers
         [Route("haze/{hazeId}")]
         public async Task<Haze> GetHazeById(string hazeId)
         {
-            return await this.hazeService.HazeDetailsById(hazeId, new Haze());
+            //return await this.hazeService.HazeDetailsById(hazeId, new Haze());
+            return await this.hazeServiceV2.HazeDetailsById(hazeId, new Haze());
         }
 
         /// <summary>
@@ -54,7 +57,7 @@ namespace HazeAPI.Controllers
             HazeWithHistory hazeWithHistory = new HazeWithHistory();
             hazeWithHistory.Haze = new Haze();
             hazeWithHistory.Histories = new LinkedList<History>();
-            return await this.hazeService.HazeHistoryById(hazeId, hazeWithHistory);
+            return await this.hazeServiceV2.HazeHistoryById(hazeId, hazeWithHistory);
         }
     }
 }
