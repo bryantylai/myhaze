@@ -59,5 +59,33 @@ namespace HazeAPI.Controllers
             hazeWithHistory.Histories = new LinkedList<History>();
             return await this.hazeServiceV2.HazeHistoryById(hazeId, hazeWithHistory);
         }
+
+        /// <summary>
+        /// Get history of Haze by Haze Id
+        /// </summary>
+        /// <param name="hazeId">Haze Id</param>
+        /// <returns>JSON response of History objects</returns>
+        [Route("v2/haze/history/{hazeId}")]
+        public async Task<HazeWithHistoryContainer> GetHazeWithHistoryContainerById(string hazeId)
+        {
+            HazeWithHistoryContainer hazeWithHistoryContainer = new HazeWithHistoryContainer();
+            try
+            {
+                HazeWithHistory hazeWithHistory = new HazeWithHistory();
+                hazeWithHistory.Haze = new Haze();
+                hazeWithHistory.Histories = new LinkedList<History>();
+                hazeWithHistoryContainer.HazeWithHistory = await this.hazeServiceV2.HazeHistoryById(hazeId, hazeWithHistory);
+            }
+            catch (Exception ex)
+            {
+                ExceptionLite exceptionLite = new ExceptionLite();
+                exceptionLite.Message = ex.Message;
+                exceptionLite.StackTrace = ex.StackTrace;
+
+                hazeWithHistoryContainer.Exception = exceptionLite;
+            }
+
+            return hazeWithHistoryContainer;
+        }
     }
 }

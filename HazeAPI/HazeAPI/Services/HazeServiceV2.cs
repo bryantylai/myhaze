@@ -277,7 +277,7 @@ namespace HazeAPI.Services
         {
             HtmlNode[] nodes = new HtmlNode[6];
             var cityNodes = hazeTable.Descendants("td").ToList();
-            var cityNode = cityNodes.FirstOrDefault((n) => n.InnerText.Equals(locationToGet));
+            var cityNode = cityNodes.FirstOrDefault((n) => n.InnerText.Contains(locationToGet));
             if (cityNode != null)
             {
                 nodes[0] = cityNode.NextSibling;

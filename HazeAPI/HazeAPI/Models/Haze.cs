@@ -41,4 +41,16 @@ namespace HazeAPI.Models
         public string ColorDiff { get; set; }
         public string TimeDiff { get; set; }
     }
+
+    public class HazeWithHistoryContainer
+    {
+        public ExceptionLite Exception { get; set; }
+        public HazeWithHistory HazeWithHistory { get; set; }
+    }
+
+    public class ExceptionLite
+    {
+        public string Message { get; set; }
+        public string StackTrace { get; set; }
+    }
 }
