@@ -1,0 +1,13 @@
+﻿<Application
+    x:Class="HazeMY.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="using:HazeMY.Converters"
+    xmlns:local="using:HazeMY"
+    RequestedTheme="Light">
+    <Application.Resources>
+        <x:String x:Key="AppName">Haze MY</x:String>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Application.Resources>
+
+</Application>
