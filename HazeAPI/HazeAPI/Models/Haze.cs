@@ -50,6 +50,7 @@ namespace HazeAPI.Models
 
     public class ExceptionLite
     {
+        public string Name { get; set; }
         public string Message { get; set; }
         public string StackTrace { get; set; }
     }

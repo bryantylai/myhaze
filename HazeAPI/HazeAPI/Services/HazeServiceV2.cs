@@ -294,9 +294,21 @@ namespace HazeAPI.Services
         private async Task<HtmlNode> GetHtmlDocumentNode(DateTime msiaNow, string url)
         {
             HtmlNode documentNode = null;
+            HttpResponseMessage response = null;
 
-            HttpResponseMessage response = await client.GetAsync(url + msiaNow.Date.ToString("yyyy-MM-dd"));
-            if (response.IsSuccessStatusCode)
+            try
+            {
+                response = await client.GetAsync(url + msiaNow.Date.ToString("yyyy-MM-dd"));
+            }
+            catch (HttpRequestException hre)
+            {
+                if (hre.InnerException != null)
+                    throw hre.InnerException;
+
+                throw;
+            }
+
+            if (response != null && response.IsSuccessStatusCode)
             {
                 string result = await response.Content.ReadAsStringAsync();
                 if (!string.IsNullOrWhiteSpace(result))

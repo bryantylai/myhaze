@@ -79,6 +79,7 @@ namespace HazeAPI.Controllers
             catch (Exception ex)
             {
                 ExceptionLite exceptionLite = new ExceptionLite();
+                exceptionLite.Name = ex.GetType().Name;
                 exceptionLite.Message = ex.Message;
                 exceptionLite.StackTrace = ex.StackTrace;
 
