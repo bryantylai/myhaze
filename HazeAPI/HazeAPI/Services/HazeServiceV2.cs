@@ -72,7 +72,7 @@ namespace HazeAPI.Services
 
             {"banting", "Banting"},
             {"kuala_selangor", "Kuala Selangor"},
-            {"pelabuhan_klang", "Pelabuhan Klang"},
+            {"pelabuhan_klang", "Pelabuhan Kelang"},
             {"petaling_jaya", "Petaling Jaya"},
             {"shah_alam", "Shah Alam"},
 
@@ -276,7 +276,8 @@ namespace HazeAPI.Services
         private IEnumerable<HtmlNode> GetHazeNodes(string locationToGet, HtmlNode hazeTable)
         {
             HtmlNode[] nodes = new HtmlNode[6];
-            var cityNode = hazeTable.Descendants("td").FirstOrDefault((n) => n.InnerText.Equals(locationToGet));
+            var cityNodes = hazeTable.Descendants("td").ToList();
+            var cityNode = cityNodes.FirstOrDefault((n) => n.InnerText.Equals(locationToGet));
             if (cityNode != null)
             {
                 nodes[0] = cityNode.NextSibling;
