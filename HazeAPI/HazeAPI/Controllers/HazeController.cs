@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using HazeAPI.Contracts;
-using HazeAPI.Services;
+using HazeAPI.Services.Obsolete;
 
 namespace HazeAPI.Controllers
 {
@@ -14,12 +14,12 @@ namespace HazeAPI.Controllers
     public class HazeController : ApiController
     {
         private HazeService hazeService;
-        private HazeServiceV2 hazeServiceV2;
+        private Services.HazeService hazeServiceV3;
 
         public HazeController()
         {
             this.hazeService = new HazeService();
-            this.hazeServiceV2 = new HazeServiceV2();
+            this.hazeServiceV3 = new Services.HazeService();
         }
 
         /// <summary>
@@ -40,10 +40,9 @@ namespace HazeAPI.Controllers
         /// <param name="hazeId">Haze Id</param>
         /// <returns>JSON response of Haze object</returns>
         [Route("haze/{hazeId}")]
-        public async Task<Haze> GetHazeById(string hazeId)
+        public Haze GetHazeById(string hazeId)
         {
-            //return await this.hazeService.HazeDetailsById(hazeId, new Haze());
-            return await this.hazeServiceV2.HazeDetailsById(hazeId, new Haze());
+            return this.hazeServiceV3.GetSingle(hazeId);
         }
 
         /// <summary>
@@ -52,12 +51,9 @@ namespace HazeAPI.Controllers
         /// <param name="hazeId">Haze Id</param>
         /// <returns>JSON response of History objects</returns>
         [Route("haze/history/{hazeId}")]
-        public async Task<HazeWithHistory> GetHazeWithHistoryById(string hazeId)
+        public HazeWithHistory GetHazeWithHistoryById(string hazeId)
         {
-            HazeWithHistory hazeWithHistory = new HazeWithHistory();
-            hazeWithHistory.Haze = new Haze();
-            hazeWithHistory.Histories = new LinkedList<History>();
-            return await this.hazeServiceV2.HazeHistoryById(hazeId, hazeWithHistory);
+            return this.hazeServiceV3.Get(hazeId);
         }
 
         /// <summary>
@@ -66,15 +62,12 @@ namespace HazeAPI.Controllers
         /// <param name="hazeId">Haze Id</param>
         /// <returns>JSON response of History objects</returns>
         [Route("v2/haze/history/{hazeId}")]
-        public async Task<HazeWithHistoryContainer> GetHazeWithHistoryContainerById(string hazeId)
+        public HazeWithHistoryContainer GetHazeWithHistoryContainerById(string hazeId)
         {
             HazeWithHistoryContainer hazeWithHistoryContainer = new HazeWithHistoryContainer();
             try
             {
-                HazeWithHistory hazeWithHistory = new HazeWithHistory();
-                hazeWithHistory.Haze = new Haze();
-                hazeWithHistory.Histories = new LinkedList<History>();
-                hazeWithHistoryContainer.HazeWithHistory = await this.hazeServiceV2.HazeHistoryById(hazeId, hazeWithHistory);
+                hazeWithHistoryContainer.HazeWithHistory = this.hazeServiceV3.Get(hazeId);
             }
             catch (Exception ex)
             {

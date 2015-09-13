@@ -8,8 +8,9 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace HazeAPI.Services
+namespace HazeAPI.Services.Obsolete
 {
+    [Obsolete]
     public class HazeServiceV2
     {
         #region Location
