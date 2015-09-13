@@ -26,19 +26,21 @@ namespace HazeAPI.Services
             HtmlNode documentNode = null;
 
             int retryCount = 0;
+            Exception exception = null;
             while (documentNode == null)
             {
                 try
                 {
                     documentNode = await GetHtml(string.Format(@"http://apims.doe.gov.my/apims/hourly{0}.php", index));
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    exception = ex;
                     retryCount++;
                 }
 
                 if (retryCount > 5)
-                    break;
+                    throw exception;
             }
 
             if (documentNode != null)
@@ -49,7 +51,7 @@ namespace HazeAPI.Services
                 {
                     string locationToGet = location.Name;
                     List<HtmlNode> hazeNodes = GetHazeNodes(locationToGet, hazeTable);
-                    List<string> hazeValues = hazeNodes.Select((n) => n.InnerText).Where(v => !v.Equals("#")).ToList();
+                    List<string> hazeValues = hazeNodes.Select((n) => n.InnerText).ToList();
 
                     Dictionary<DateTime, string> hazeTimeTable = PopulateHazeTimeTable(index, hazeValues, currentMalaysiaTime.Date);
 
@@ -120,7 +122,8 @@ namespace HazeAPI.Services
 
             foreach (string hazeValue in hazeValues)
             {
-                hazeTimeTable.Add(initialTime, hazeValue);
+                if (!hazeValue.Equals("#"))
+                    hazeTimeTable.Add(initialTime, hazeValue);
                 initialTime = initialTime.AddHours(1);
             }
 

@@ -14,11 +14,18 @@ namespace HazeAPI.Controllers
     {
         [Route("")]
         [HttpGet]
-        public async Task<bool> Update()
+        public async Task<string> Update()
         {
-            UpdateService updateService = new UpdateService();
-            bool result = await updateService.Update();
-            return result;
+            try
+            {
+                UpdateService updateService = new UpdateService();
+                bool result = await updateService.Update();
+                return result.ToString();
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
     }
 }
