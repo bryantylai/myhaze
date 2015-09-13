@@ -1,4 +1,4 @@
-﻿using HazeAPI.Models;
+﻿using HazeAPI.Contracts;
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;

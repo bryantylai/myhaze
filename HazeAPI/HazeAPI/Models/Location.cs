@@ -12,15 +12,18 @@ namespace HazeAPI.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Haze
+    public partial class Location
     {
-        public System.Guid Id { get; set; }
-        public System.Guid LocationId { get; set; }
-        public int PSI { get; set; }
-        public string Code { get; set; }
-        public int RecordHour { get; set; }
-        public System.DateTime RecordDate { get; set; }
+        public Location()
+        {
+            this.Hazes = new HashSet<Haze>();
+        }
     
-        public virtual Location Location { get; set; }
+        public System.Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Code { get; set; }
+        public Nullable<System.DateTime> LastUpdatedAt { get; set; }
+    
+        public virtual ICollection<Haze> Hazes { get; set; }
     }
 }

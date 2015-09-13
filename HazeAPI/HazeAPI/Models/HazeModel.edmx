@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="HazeMYModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Haze">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RecordHour" Type="int" Nullable="false" />
+          <Property Name="RecordDate" Type="date" Nullable="false" />
+          <Property Name="LocationId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PSI" Type="int" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="3" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Code" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="LastUpdatedAt" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_Haze_Location">
+          <End Role="Location" Type="Self.Location" Multiplicity="1" />
+          <End Role="Haze" Type="Self.Haze" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Haze">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="HazeMYModelStoreContainer">
+          <EntitySet Name="Haze" EntityType="Self.Haze" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Haze_Location" Association="Self.FK_Haze_Location">
+            <End Role="Location" EntitySet="Location" />
+            <End Role="Haze" EntitySet="Haze" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="HazeMYModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="HazeMYEntities" annotation:LazyLoadingEnabled="true" >
+          <EntitySet Name="Hazes" EntityType="HazeMYModel.Haze" />
+          <EntitySet Name="Locations" EntityType="HazeMYModel.Location" />
+          <AssociationSet Name="FK_Haze_Location" Association="HazeMYModel.FK_Haze_Location">
+            <End Role="Location" EntitySet="Locations" />
+            <End Role="Haze" EntitySet="Hazes" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Haze">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="LocationId" Type="Guid" Nullable="false" />
+          <Property Name="PSI" Type="Int32" Nullable="false" />
+          <Property Name="Code" Type="String" MaxLength="3" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Location" Relationship="HazeMYModel.FK_Haze_Location" FromRole="Haze" ToRole="Location" />
+          <Property Name="RecordHour" Type="Int32" Nullable="false" />
+          <Property Name="RecordDate" Type="DateTime" Nullable="false" Precision="0" />
+        </EntityType>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Hazes" Relationship="HazeMYModel.FK_Haze_Location" FromRole="Location" ToRole="Haze" />
+          <Property Name="LastUpdatedAt" Type="DateTime" Precision="3" />
+        </EntityType>
+        <Association Name="FK_Haze_Location">
+          <End Type="HazeMYModel.Location" Role="Location" Multiplicity="1" />
+          <End Type="HazeMYModel.Haze" Role="Haze" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Haze">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="HazeMYModelStoreContainer" CdmEntityContainer="HazeMYEntities" >
+          <EntitySetMapping Name="Hazes">
+            <EntityTypeMapping TypeName="HazeMYModel.Haze">
+              <MappingFragment StoreEntitySet="Haze">
+                <ScalarProperty Name="RecordDate" ColumnName="RecordDate" />
+                <ScalarProperty Name="RecordHour" ColumnName="RecordHour" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="PSI" ColumnName="PSI" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Locations">
+            <EntityTypeMapping TypeName="HazeMYModel.Location">
+              <MappingFragment StoreEntitySet="Location">
+                <ScalarProperty Name="LastUpdatedAt" ColumnName="LastUpdatedAt" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

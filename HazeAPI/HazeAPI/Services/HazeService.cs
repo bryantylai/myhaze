@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
-using HazeAPI.Models;
+using HazeAPI.Contracts;
 using HtmlAgilityPack;
 
 namespace HazeAPI.Services
