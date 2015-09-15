@@ -136,7 +136,7 @@ namespace HazeAPI.Services
             }
             else
             {
-                return hazeModel.RecordHour + " PM";
+                return (hazeModel.RecordHour - 12) + " PM";
             }
         }
     }

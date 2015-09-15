@@ -14,6 +14,7 @@ namespace HazeAPI.Services
     {
         public async Task<bool> Update()
         {
+            bool result = false;
             var entities = new Models.HazeMYEntities();
 
             if (entities.Locations.Count() == 0)
@@ -22,7 +23,7 @@ namespace HazeAPI.Services
             }
 
             DateTime currentMalaysiaTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Singapore Standard Time"));
-            int index = GetCurrentIndexByMalaysiaTime(currentMalaysiaTime);
+            int index = GetCurrentIndexByMalaysiaTime(ref currentMalaysiaTime);
             HtmlNode documentNode = null;
 
             int retryCount = 0;
@@ -31,7 +32,7 @@ namespace HazeAPI.Services
             {
                 try
                 {
-                    documentNode = await GetHtml(string.Format(@"http://apims.doe.gov.my/apims/hourly{0}.php", index));
+                    documentNode = await GetHtml(string.Format(@"http://apims.doe.gov.my/apims/hourly{0}.php?date={1}", index, currentMalaysiaTime.ToString("yyyy-MM-dd")));
                 }
                 catch (Exception ex)
                 {
@@ -46,48 +47,54 @@ namespace HazeAPI.Services
             if (documentNode != null)
             {
                 HtmlNode hazeTable = documentNode.Descendants("table").FirstOrDefault((n) => n.HasAttributes && n.Attributes.AttributesWithName("class").First().Value.Equals("table1"));
-                List<Location> locations = entities.Locations.ToList();
-                foreach (Location location in locations)
+                if (hazeTable != null)
                 {
-                    string locationToGet = location.Name;
-                    List<HtmlNode> hazeNodes = GetHazeNodes(locationToGet, hazeTable);
-                    List<string> hazeValues = hazeNodes.Select((n) => n.InnerText).ToList();
-
-                    Dictionary<DateTime, string> hazeTimeTable = PopulateHazeTimeTable(index, hazeValues, currentMalaysiaTime.Date);
-
-                    foreach (KeyValuePair<DateTime, string> itemPair in hazeTimeTable)
+                    List<Location> locations = entities.Locations.ToList();
+                    foreach (Location location in locations)
                     {
-                        Haze existingValue = entities.Hazes.Where(h => h.Location.Name == location.Name && h.RecordDate == currentMalaysiaTime.Date && h.RecordHour == itemPair.Key.Hour).FirstOrDefault();
-                        if (existingValue == null)
+                        string locationToGet = location.Name;
+                        List<HtmlNode> hazeNodes = GetHazeNodes(locationToGet, hazeTable);
+                        List<string> hazeValues = hazeNodes.Select((n) => n.InnerText).ToList();
+
+                        Dictionary<DateTime, string> hazeTimeTable = PopulateHazeTimeTable(index, hazeValues, currentMalaysiaTime.Date);
+
+                        foreach (KeyValuePair<DateTime, string> itemPair in hazeTimeTable)
                         {
-                            location.LastUpdatedAt = itemPair.Key;
-
-                            Haze haze = new Haze();
-                            haze.Location = location;
-                            haze.Id = Guid.NewGuid();
-                            var latestHazeValueAsCharArray = itemPair.Value.ToCharArray();
-
-                            string code = latestHazeValueAsCharArray.LastOrDefault().ToString();
-                            if (Regex.IsMatch(code, "[*abcd&]"))
+                            Haze existingValue = entities.Hazes.Where(h => h.Location.Name == location.Name && h.RecordDate == currentMalaysiaTime.Date && h.RecordHour == itemPair.Key.Hour).FirstOrDefault();
+                            if (existingValue == null)
                             {
-                                haze.Code = code;
+                                location.LastUpdatedAt = itemPair.Key;
+
+                                Haze haze = new Haze();
+                                haze.Location = location;
+                                haze.Id = Guid.NewGuid();
+                                var latestHazeValueAsCharArray = itemPair.Value.ToCharArray();
+
+                                string code = latestHazeValueAsCharArray.LastOrDefault().ToString();
+                                if (Regex.IsMatch(code, "[*abcd&]"))
+                                {
+                                    haze.Code = code;
+                                }
+
+                                string hazeValueAsString = Regex.Replace(itemPair.Value, "[*abcd&]", string.Empty);
+                                int hazeValueAsInt = int.Parse(hazeValueAsString);
+                                haze.PSI = hazeValueAsInt;
+
+                                haze.RecordDate = itemPair.Key.Date;
+                                haze.RecordHour = itemPair.Key.Hour;
+
+                                entities.Hazes.Add(haze);
                             }
-
-                            string hazeValueAsString = Regex.Replace(itemPair.Value, "[*abcd&]", string.Empty);
-                            int hazeValueAsInt = int.Parse(hazeValueAsString);
-                            haze.PSI = hazeValueAsInt;
-
-                            haze.RecordDate = itemPair.Key.Date;
-                            haze.RecordHour = itemPair.Key.Hour;
-
-                            entities.Hazes.Add(haze);
                         }
                     }
                 }
 
-                if(entities.SaveChanges() > 0)
+                if (entities.SaveChanges() > 0)
+                    result = true;
+
+                if (result)
                 {
-                    DateTime deletionDate =  currentMalaysiaTime.Date.AddDays(-3);
+                    DateTime deletionDate = currentMalaysiaTime.Date.AddDays(-3);
                     List<Haze> hazesToDeleteList = entities.Hazes.Where(h => h.RecordDate < deletionDate).ToList();
                     foreach (Haze hazeToDelete in hazesToDeleteList)
                     {
@@ -96,11 +103,9 @@ namespace HazeAPI.Services
 
                     entities.SaveChanges();
                 }
-
-                return true;
             }
 
-            return false;
+            return result;
         }
 
         private Dictionary<DateTime, string> PopulateHazeTimeTable(int index, List<string> hazeValues, DateTime malaysiaDate)
@@ -240,15 +245,15 @@ namespace HazeAPI.Services
         {
             var currentUri = new Uri(url, UriKind.Absolute);
             HttpClient httpClient = new HttpClient();
-            var html = await httpClient.GetStringAsync(currentUri);
-
+            string html = await httpClient.GetStringAsync(currentUri);
+            
             HtmlDocument htmlDocument = new HtmlDocument();
             htmlDocument.OptionFixNestedTags = true;
             htmlDocument.LoadHtml(html);
             return htmlDocument.DocumentNode;
         }
 
-        private int GetCurrentIndexByMalaysiaTime(DateTime currentMalaysiaTime)
+        private int GetCurrentIndexByMalaysiaTime(ref DateTime currentMalaysiaTime)
         {
             if (currentMalaysiaTime.Hour == 0)
             {
