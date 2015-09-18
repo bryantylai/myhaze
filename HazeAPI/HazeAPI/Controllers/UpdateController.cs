@@ -24,7 +24,7 @@ namespace HazeAPI.Controllers
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return ex.StackTrace;
             }
         }
     }

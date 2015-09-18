@@ -32,7 +32,7 @@ namespace HazeAPI.Services
             {
                 try
                 {
-                    documentNode = await GetHtml(string.Format(@"http://apims.doe.gov.my/apims/hourly{0}.php?date={1}", index, currentMalaysiaTime.ToString("yyyy-MM-dd")));
+                    documentNode = await GetHtml(string.Format(@"http://apims.doe.gov.my/v2/hourly{0}.php?date={1}", index, currentMalaysiaTime.ToString("yyyy-MM-dd")));
                 }
                 catch (Exception ex)
                 {
@@ -78,30 +78,31 @@ namespace HazeAPI.Services
 
                                 string hazeValueAsString = Regex.Replace(itemPair.Value, "[*abcd&]", string.Empty);
                                 int hazeValueAsInt = int.Parse(hazeValueAsString);
+
                                 haze.PSI = hazeValueAsInt;
 
                                 haze.RecordDate = itemPair.Key.Date;
                                 haze.RecordHour = itemPair.Key.Hour;
-
                                 entities.Hazes.Add(haze);
+
                             }
                         }
                     }
-                }
 
-                if (entities.SaveChanges() > 0)
-                    result = true;
+                    if (entities.SaveChanges() > 0)
+                        result = true;
 
-                if (result)
-                {
-                    DateTime deletionDate = currentMalaysiaTime.Date.AddDays(-3);
-                    List<Haze> hazesToDeleteList = entities.Hazes.Where(h => h.RecordDate < deletionDate).ToList();
-                    foreach (Haze hazeToDelete in hazesToDeleteList)
+                    if (result)
                     {
-                        entities.Hazes.Remove(hazeToDelete);
-                    }
+                        DateTime deletionDate = currentMalaysiaTime.Date.AddDays(-3);
+                        List<Haze> hazesToDeleteList = entities.Hazes.Where(h => h.RecordDate < deletionDate).ToList();
+                        foreach (Haze hazeToDelete in hazesToDeleteList)
+                        {
+                            entities.Hazes.Remove(hazeToDelete);
+                        }
 
-                    entities.SaveChanges();
+                        entities.SaveChanges();
+                    }
                 }
             }
 
@@ -127,7 +128,7 @@ namespace HazeAPI.Services
 
             foreach (string hazeValue in hazeValues)
             {
-                if (!hazeValue.Equals("#"))
+                if (!hazeValue.Equals("n/a") && !hazeValue.Equals("&nbsp;"))
                     hazeTimeTable.Add(initialTime, hazeValue);
                 initialTime = initialTime.AddHours(1);
             }
