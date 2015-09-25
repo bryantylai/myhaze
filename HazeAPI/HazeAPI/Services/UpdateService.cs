@@ -32,7 +32,7 @@ namespace HazeAPI.Services
             {
                 try
                 {
-                    documentNode = await GetHtml(string.Format(@"http://apims.doe.gov.my/v2/hourly{0}.php?date={1}", index, currentMalaysiaTime.ToString("yyyy-MM-dd")));
+                    documentNode = await GetHtml(string.Format(@"http://apims.doe.gov.my/v2/hour{0}_{1}.html", index, currentMalaysiaTime.ToString("yyyy-MM-dd")));
                 }
                 catch (Exception ex)
                 {
