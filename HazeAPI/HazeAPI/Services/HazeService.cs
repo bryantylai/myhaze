@@ -34,6 +34,11 @@ namespace HazeAPI.Services
 
         public HazeWithHistory Get(string locationId)
         {
+            if (locationId.Equals("pelabuhan_kelang"))
+            {
+                locationId = "pelabuhan_klang";
+            }
+
             var entities = new Models.HazeMYEntities();
             DateTime currentMalaysiaTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Singapore Standard Time"));
             DateTime oldestDateToRetrieve = currentMalaysiaTime.Date.AddDays(-1);
